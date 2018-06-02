@@ -49,6 +49,7 @@ var handlers = {
     const currentRecipe = this.attributes.foodBox.currentRecipe;
     let currentIngredient = this.attributes.foodBox.currentIngredient;
     let currentStep = this.attributes.foodBox.currentStep;
+    let waitForMore = true;
 
     if (currentIngredient < currentRecipe.ingredients.length) {
       if (currentIngredient === 0) {
@@ -67,14 +68,17 @@ var handlers = {
       this.attributes.foodBox.currentIngredient = 0;
       this.attributes.foodBox.currentStep = 0;
 
-      promptQueue.push('There are no more steps for this recipe. Goodbye!');
+      this.emit(':tell', 'There are no more steps for this recipe. Goodbye!');
+      this.emit(':responseReady');
+      waitForMore = false;
     }
+    if (waitForMore) {
+      let message = promptQueue.join(' ');
+      promptQueue = [];
 
-    let message = promptQueue.join(' ');
-    promptQueue = [];
-
-    this.emit(':ask', message);
-    this.emit(':responseReady');
+      this.emit(':ask', message);
+      this.emit(':responseReady');
+    }
   },
   'Repeat': function () {
     const currentRecipe = this.attributes.foodBox.currentRecipe;
