@@ -1,0 +1,27 @@
+{
+  "burger": {
+    "ingredients": [
+      "10 oz Ground Beef",
+      "2 Potato Buns",
+      "1 Sweet Onion"
+    ],
+    "steps": [
+      "If you’re grilling, preheat your grill to maintain a temperature of 450-500°F.",
+      "Oil the grill grates.",
+      "Wash and dry the fresh produce."
+    ]
+  },
+  "pasta": {
+    "name": "pasta",
+    "ingredients": [
+      "1/2 lb Penne Pasta",
+      "1 Zucchini",
+      "2 cloves Garlic"
+    ],
+    "steps": [
+      "Heat a medium pot of salted water to boiling on high.",
+      "Wash and dry the fresh produce.",
+      "Quarter the zucchini lengthwise, then cut crosswise into 1/4-inch- thick pieces."
+    ]
+  }
+}
