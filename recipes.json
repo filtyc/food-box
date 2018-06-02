@@ -1,5 +1,6 @@
 {
   "burger": {
+    "fullName": "Creamy Caramelized Onion Burgers with Butter Lettuce Salad",
     "ingredients": [
       "10 oz Ground Beef",
       "2 Potato Buns",
@@ -12,7 +13,7 @@
     ]
   },
   "pasta": {
-    "name": "pasta",
+    "fullName": "Spicy Penne Pasta with Zucchini and Capers",
     "ingredients": [
       "1/2 lb Penne Pasta",
       "1 Zucchini",
