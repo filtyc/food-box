@@ -24,7 +24,7 @@
           "slots": [
             {
               "name": "recipe",
-              "type": "recipe"
+              "type": "RECIPE"
             }
           ],
           "samples": [
@@ -57,24 +57,26 @@
           "values": [
             {
               "name": {
-                "value": "burger",
+                "value": "Creamy Caramelized Onion Burgers with Butter Lettuce Salad",
                 "synonyms": [
-                  "Creamy Caramelized Onion Burgers",
-                  "burgers"
+                  "burger",
+                  "burgers",
+                  "Creamy Caramelized Onion Burgers"
                 ]
               }
             },
             {
               "name": {
-                "value": "pasta",
+                "value": "Spicy Penne Pasta with Zucchini and Capers",
                 "synonyms": [
-                  "Spicy Penne Pasta",
-                  "red pasta"
+                  "pasta",
+                  "red pasta",
+                  "Spicy Penne Pasta"
                 ]
               }
             }
           ],
-          "name": "recipe"
+          "name": "RECIPE"
         }
       ]
     }

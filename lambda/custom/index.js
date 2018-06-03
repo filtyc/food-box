@@ -5,7 +5,7 @@ const fs = require('fs');
 
 let promptQueue = [];
 
-var handlers = {
+const handlers = {
   'LaunchRequest': function() {
     promptQueue = [];
     let welcomeMessage = '';
@@ -30,19 +30,23 @@ var handlers = {
     this.emit(':responseReady');
   },
   'ChooseRecipe': function () {
-    const chosenRecipe = this.event.request.intent.slots.recipe.value;
+    const recipeRequested = this.event.request.intent.slots.recipe.value;
+    const erStatus = this.event.request.intent.slots.recipe.resolutions.resolutionsPerAuthority[0].status.code;
 
-    if (chosenRecipe === 'burger' || chosenRecipe === 'pasta') {
+    if (erStatus === 'ER_SUCCESS_NO_MATCH') {
+      this.emit(':tell', `Sorry, I couldn't find a recipe for ${recipeRequested}.`);
+      // TODO: list availible options
+      this.emit(':responseReady');
+    } else {
+      const resolvedRecipe = this.event.request.intent.slots.recipe.resolutions.resolutionsPerAuthority[0].values[0].value.name;
+
       const recipes = JSON.parse(fs.readFileSync('recipes.json'));
-      this.attributes.foodBox.currentRecipe = recipes[chosenRecipe];
+      this.attributes.foodBox.currentRecipe = recipes[resolvedRecipe];
 
       promptQueue = [];
-      promptQueue.push(`You chose ${chosenRecipe}. `);
+      promptQueue.push(`You chose ${resolvedRecipe}. `);
 
       this.emitWithState('Next');
-    } else {
-      this.emit(':tell', `Sorry, I don't have a recipe for that.`);
-      this.emit(':responseReady');
     }
   },
   'Next': function () {
