@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "alexa-sdk": "^1.0.25",
-    "lodash": "^4.17.10"
+    "lodash": "^4.17.10",
+    "ssml-builder": "^0.4.3"
   }
 }

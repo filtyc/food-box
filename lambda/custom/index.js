@@ -1,6 +1,7 @@
 'use strict';
 
 const Alexa = require('alexa-sdk');
+const Speech = require('ssml-builder');
 const fs = require('fs');
 const _ = require('lodash');
 
@@ -11,34 +12,34 @@ const HELP_OFFER = 'Say "Alexa, ask Food Box for help" to hear a full reminder o
 
 const handlers = {
   'LaunchRequest': function() {
+    let speech = new Speech();
     // first time user
     if (_.isEmpty(this.attributes)) {
       this.attributes.foodBox = {
         'currentRecipe': {},
         'currentStep': 0
       };
-      this.emit(':tell', FIRST_WELCOME_MESSAGE);
-      this.emit(':responseReady');
+      speech.say(FIRST_WELCOME_MESSAGE);
     }
     // returning user with an open recipe
     else if (!_.isEmpty(this.attributes.foodBox.currentRecipe)) {
       const recipe = this.attributes.foodBox.currentRecipe.fullName;
       const mealkit = this.attributes.foodBox.currentRecipe.mealkit;
-      const output = `${REGULAR_WELCOME_MESSAGE} You are in the middle of cooking ${recipe} from ${mealkit}. ${HELP_OFFER}`;
-      this.emit(':tell', output);
-      this.emit(':responseReady');
+      speech.say(`${REGULAR_WELCOME_MESSAGE} You are in the middle of cooking ${recipe} from ${mealkit}. ${HELP_OFFER}`);
     }
     // returning user with no open recipe
     else {
-      const output = `${REGULAR_WELCOME_MESSAGE} You don\'t have an open recipe. ${HELP_OFFER}`;
-      this.emit(':tell', output);
-      this.emit(':responseReady');
+      speech.say(`${REGULAR_WELCOME_MESSAGE} You don\'t have an open recipe. ${HELP_OFFER}`);
     }
+    const speechOutput = speech.ssml(true);
+    this.emit(':tell', speechOutput);
+    this.emit(':responseReady');
   },
   'ChooseRecipe': function () {
     if (this.event.request.dialogState !== 'COMPLETED') {
       this.emit(':delegate');
     } else {
+      let speech = new Speech();
       // TODO: confirm change in recipe if one was ongoing
       this.attributes.foodBox = {
         'currentRecipe': {},
@@ -49,24 +50,23 @@ const handlers = {
       const erRecipeStatus = this.event.request.intent.slots.recipe.resolutions.resolutionsPerAuthority[0].status.code;
       const erMealkitStatus = this.event.request.intent.slots.mealkit.resolutions.resolutionsPerAuthority[0].status.code;
       if (erMealkitStatus === 'ER_SUCCESS_NO_MATCH') {
-        this.emit(':tell', `Sorry, ${mealkitRequested} is not one of the meal kit options.`);
+        speech.say(`Sorry, ${mealkitRequested} is not one of the meal kit options.`);
         // TODO: list availible options
-        this.emit(':responseReady');
       }
       else if (erRecipeStatus === 'ER_SUCCESS_NO_MATCH') {
-        this.emit(':tell', `Sorry, I couldn't find a recipe for ${recipeRequested}.`);
+        speech.say(`Sorry, I couldn't find a recipe for ${recipeRequested} from ${mealkitRequested}.`)
         // TODO: list availible options
-        this.emit(':responseReady');
       } else {
         const resolvedRecipe = this.event.request.intent.slots.recipe.resolutions.resolutionsPerAuthority[0].values[0].value.name;
         const resolvedMealkit = this.event.request.intent.slots.mealkit.resolutions.resolutionsPerAuthority[0].values[0].value.name;
         const recipes = JSON.parse(fs.readFileSync('recipes.json'));
         // can this be done with dots?
         this.attributes.foodBox.currentRecipe = recipes[resolvedMealkit][resolvedRecipe];
-        // TODO: move this to next and get rid of promptQueue
-        this.emit(':tell', `You chose ${resolvedRecipe} from ${resolvedMealkit}.`);
-        this.emit(':responseReady');
+        speech.say(`You chose ${resolvedRecipe} from ${resolvedMealkit}.`);
       }
+      const speechOutput = speech.ssml(true);
+      this.emit(':ask', speechOutput);
+      this.emit(':responseReady');
     }
   },
   'Next': function () {
@@ -74,26 +74,26 @@ const handlers = {
     const lastIngredient = this.attributes.foodBox.currentRecipe.lastIngredient;
     const stepTotal = currentRecipe.steps.length;
     let currentStep = this.attributes.foodBox.currentStep;
-    let output = '';
+    let speech = new Speech();
 
     if (currentStep >= stepTotal) {
       this.attributes.foodBox = {
         'currentRecipe': {},
         'currentStep': 0
       };
-      this.emit(':tell', 'There are no more steps for this recipe. Goodbye!');
-      this.emit(':responseReady');
+      speech.say('There are no more steps for this recipe. Goodbye!');
     } else {
       if (currentStep === 0) {
-        output = 'Grab the following ingredients: ';
+        speech.say('Grab the following ingredients: ');
       } else if (currentStep === lastIngredient + 1) {
-        output = 'Continue with the following steps: ';
+        speech.say('Continue with the following steps: ');
       }
-      output += currentRecipe.steps[currentStep];
+      speech.say(currentRecipe.steps[currentStep]);
       this.attributes.foodBox.currentStep++;
-      this.emit(':tell', output);
-      this.emit(':responseReady');
     }
+    const speechOutput = speech.ssml(true);
+    this.emit(':ask', speechOutput);
+    this.emit(':responseReady');
   },
   'Repeat': function () {
     const currentRecipe = this.attributes.foodBox.currentRecipe;
@@ -101,7 +101,7 @@ const handlers = {
     if (currentStep > 0) {
       this.attributes.foodBox.currentStep--;
     }
-    this.emitWithState('Next');
+    this.emit('Next');
   },
   'AMAZON.StopIntent': function() {
     this.emit(':tell', 'Goodbye!');
@@ -116,7 +116,7 @@ const handlers = {
     this.emit(':responseReady');
   },
   'Unhandled': function () {
-    this.emit(':tell', 'Sorry, I didn\'t get that.');
+    this.emit(':tell', `Sorry, I didn't get that.`);
     this.emit(':responseReady');
   },
   'SessionEndedRequest': function() {
