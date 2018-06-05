@@ -1,28 +1,58 @@
 {
-  "Creamy Caramelized Onion Burgers with Butter Lettuce Salad": {
-    "fullName": "Creamy Caramelized Onion Burgers with Butter Lettuce Salad",
-    "ingredients": [
-      "10 oz Ground Beef",
-      "2 Potato Buns",
-      "1 Sweet Onion"
-    ],
-    "steps": [
-      "If you’re grilling, preheat your grill to maintain a temperature of 450-500°F.",
-      "Oil the grill grates.",
-      "Wash and dry the fresh produce."
-    ]
+  "Blue Apron": {
+    "Creamy Caramelized Onion Burgers with Butter Lettuce Salad": {
+      "fullName": "Creamy Caramelized Onion Burgers with Butter Lettuce Salad",
+      "mealkit": "Blue Apron",
+      "steps": [
+        "10 oz Ground Beef",
+        "2 Potato Buns",
+        "1 Sweet Onion",
+        "If you’re grilling, preheat your grill to maintain a temperature of 450-500°F.",
+        "Oil the grill grates.",
+        "Wash and dry the fresh produce."
+      ],
+      "lastIngredient": 2
+    },
+    "Spicy Penne Pasta with Zucchini and Capers": {
+      "fullName": "Spicy Penne Pasta with Zucchini and Capers",
+      "mealkit": "Blue Apron",
+      "steps": [
+        "1/2 lb Penne Pasta",
+        "1 Zucchini",
+        "2 cloves Garlic",
+        "Heat a medium pot of salted water to boiling on high.",
+        "Wash and dry the fresh produce.",
+        "Quarter the zucchini lengthwise, then cut crosswise into 1/4-inch- thick pieces."
+      ],
+      "lastIngredient": 2
+    }
   },
-  "Spicy Penne Pasta with Zucchini and Capers": {
-    "fullName": "Spicy Penne Pasta with Zucchini and Capers",
-    "ingredients": [
-      "1/2 lb Penne Pasta",
-      "1 Zucchini",
-      "2 cloves Garlic"
-    ],
-    "steps": [
-      "Heat a medium pot of salted water to boiling on high.",
-      "Wash and dry the fresh produce.",
-      "Quarter the zucchini lengthwise, then cut crosswise into 1/4-inch- thick pieces."
-    ]
+  "Purple Carrot": {
+    "Creamy Caramelized Onion Burgers with Butter Lettuce Salad": {
+      "fullName": "Creamy Caramelized Onion Burgers with Butter Lettuce Salad",
+      "mealkit": "Purple Carrot",
+      "steps": [
+        "10 oz Ground Beef",
+        "2 Potato Buns",
+        "1 Sweet Onion",
+        "If you’re grilling, preheat your grill to maintain a temperature of 450-500°F.",
+        "Oil the grill grates.",
+        "Wash and dry the fresh produce."
+      ],
+      "lastIngredient": 2
+    },
+    "Spicy Penne Pasta with Zucchini and Capers": {
+      "fullName": "Spicy Penne Pasta with Zucchini and Capers",
+      "mealkit": "Purple Carrot",
+      "steps": [
+        "1/2 lb Penne Pasta",
+        "1 Zucchini",
+        "2 cloves Garlic",
+        "Heat a medium pot of salted water to boiling on high.",
+        "Wash and dry the fresh produce.",
+        "Quarter the zucchini lengthwise, then cut crosswise into 1/4-inch- thick pieces."
+      ],
+      "lastIngredient": 2
+    }
   }
 }

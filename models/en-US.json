@@ -23,6 +23,13 @@
                   "name": "ChooseRecipe",
                   "slots": [
                       {
+                          "name": "mealkit",
+                          "type": "MEALKIT",
+                          "samples": [
+                              "{mealkit}"
+                          ]
+                      },
+                      {
                           "name": "recipe",
                           "type": "RECIPE",
                           "samples": [
@@ -31,6 +38,7 @@
                       }
                   ],
                   "samples": [
+                      "read me the recipe for {recipe} from {mealkit}",
                       "read a recipe",
                       "read me a recipe",
                       "read me the recipe for {recipe}",
@@ -60,7 +68,9 @@
                   "samples": [
                       "repeat the last thing you said",
                       "repeat last ingredient",
+                      "repeat the last ingredient",
                       "repeat last step",
+                      "repeat the last step",
                       "repeat"
                   ]
               }
@@ -90,6 +100,21 @@
                           }
                       }
                   ]
+              },
+              {
+                  "name": "MEALKIT",
+                  "values": [
+                      {
+                          "name": {
+                              "value": "Purple Carrot"
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "Blue Apron"
+                          }
+                      }
+                  ]
               }
           ]
       },
@@ -100,6 +125,15 @@
                   "confirmationRequired": false,
                   "prompts": {},
                   "slots": [
+                      {
+                          "name": "mealkit",
+                          "type": "MEALKIT",
+                          "confirmationRequired": false,
+                          "elicitationRequired": true,
+                          "prompts": {
+                              "elicitation": "Elicit.Slot.966093114122.346421043254"
+                          }
+                      },
                       {
                           "name": "recipe",
                           "type": "RECIPE",
@@ -120,6 +154,15 @@
                   {
                       "type": "PlainText",
                       "value": "What would you like to cook?"
+                  }
+              ]
+          },
+          {
+              "id": "Elicit.Slot.966093114122.346421043254",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "Which meal kit are you cooking from?"
                   }
               ]
           }
