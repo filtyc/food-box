@@ -30,23 +30,35 @@ const handlers = {
     this.emit(':responseReady');
   },
   'ChooseRecipe': function () {
-    const recipeRequested = this.event.request.intent.slots.recipe.value;
-    const erStatus = this.event.request.intent.slots.recipe.resolutions.resolutionsPerAuthority[0].status.code;
-
-    if (erStatus === 'ER_SUCCESS_NO_MATCH') {
-      this.emit(':tell', `Sorry, I couldn't find a recipe for ${recipeRequested}.`);
-      // TODO: list availible options
-      this.emit(':responseReady');
+    if (this.event.request.dialogState !== 'COMPLETED') {
+      this.emit(':delegate');
     } else {
-      const resolvedRecipe = this.event.request.intent.slots.recipe.resolutions.resolutionsPerAuthority[0].values[0].value.name;
+      // TODO: confirm change in recipe if one was ongoing
+      this.attributes.foodBox = {
+        'currentRecipe': {},
+        'currentIngredient': 0,
+        'currentStep': 0
+      };
 
-      const recipes = JSON.parse(fs.readFileSync('recipes.json'));
-      this.attributes.foodBox.currentRecipe = recipes[resolvedRecipe];
+      const recipeRequested = this.event.request.intent.slots.recipe.value;
+      const erStatus = this.event.request.intent.slots.recipe.resolutions.resolutionsPerAuthority[0].status.code;
 
-      promptQueue = [];
-      promptQueue.push(`You chose ${resolvedRecipe}. `);
+      if (erStatus === 'ER_SUCCESS_NO_MATCH') {
+        this.emit(':tell', `Sorry, I couldn't find a recipe for ${recipeRequested}.`);
+        // TODO: list availible options
+        this.emit(':responseReady');
+      } else {
+        const resolvedRecipe = this.event.request.intent.slots.recipe.resolutions.resolutionsPerAuthority[0].values[0].value.name;
 
-      this.emitWithState('Next');
+        const recipes = JSON.parse(fs.readFileSync('recipes.json'));
+        this.attributes.foodBox.currentRecipe = recipes[resolvedRecipe];
+
+        // TODO: move this to next and get rid of promptQueue
+        promptQueue = [];
+        promptQueue.push(`You chose ${resolvedRecipe}. `);
+
+        this.emitWithState('Next');
+      }
     }
   },
   'Next': function () {
@@ -80,7 +92,7 @@ const handlers = {
       let message = promptQueue.join(' ');
       promptQueue = [];
 
-      this.emit(':ask', message);
+      this.emit(':tell', message);
       this.emit(':responseReady');
     }
   },

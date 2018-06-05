@@ -1,84 +1,128 @@
 {
   "interactionModel": {
-    "languageModel": {
-      "invocationName": "food box",
-      "intents": [
-        {
-          "name": "AMAZON.FallbackIntent",
-          "samples": []
-        },
-        {
-          "name": "AMAZON.CancelIntent",
-          "samples": []
-        },
-        {
-          "name": "AMAZON.HelpIntent",
-          "samples": []
-        },
-        {
-          "name": "AMAZON.StopIntent",
-          "samples": []
-        },
-        {
-          "name": "ChooseRecipe",
-          "slots": [
-            {
-              "name": "recipe",
-              "type": "RECIPE"
-            }
-          ],
-          "samples": [
-            "{recipe}",
-            "let's cook {recipe}"
-          ]
-        },
-        {
-          "name": "Next",
-          "samples": [
-            "next one",
-            "what's next",
-            "next ingredient",
-            "next step",
-            "next"
-          ]
-        },
-        {
-          "name": "Repeat",
-          "samples": [
-            "repeat the last thing you said",
-            "repeat last ingredient",
-            "repeat last step",
-            "repeat"
-          ]
-        }
-      ],
-      "types": [
-        {
-          "values": [
-            {
-              "name": {
-                "value": "Creamy Caramelized Onion Burgers with Butter Lettuce Salad",
-                "synonyms": [
-                  "burger",
-                  "burgers",
-                  "Creamy Caramelized Onion Burgers"
-                ]
+      "languageModel": {
+          "invocationName": "food box",
+          "intents": [
+              {
+                  "name": "AMAZON.FallbackIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.CancelIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.HelpIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.StopIntent",
+                  "samples": []
+              },
+              {
+                  "name": "ChooseRecipe",
+                  "slots": [
+                      {
+                          "name": "recipe",
+                          "type": "RECIPE",
+                          "samples": [
+                              "{recipe}"
+                          ]
+                      }
+                  ],
+                  "samples": [
+                      "read a recipe",
+                      "read me a recipe",
+                      "read me the recipe for {recipe}",
+                      "let's cook",
+                      "let's cook {recipe}",
+                      "{recipe}",
+                      "switch recipes",
+                      "switch recipes to {recipe}",
+                      "switch recipe to {recipe}",
+                      "switch recipe"
+                  ]
+              },
+              {
+                  "name": "Next",
+                  "slots": [],
+                  "samples": [
+                      "next one",
+                      "what's next",
+                      "next ingredient",
+                      "next step",
+                      "next"
+                  ]
+              },
+              {
+                  "name": "Repeat",
+                  "slots": [],
+                  "samples": [
+                      "repeat the last thing you said",
+                      "repeat last ingredient",
+                      "repeat last step",
+                      "repeat"
+                  ]
               }
-            },
-            {
-              "name": {
-                "value": "Spicy Penne Pasta with Zucchini and Capers",
-                "synonyms": [
-                  "pasta",
-                  "red pasta",
-                  "Spicy Penne Pasta"
-                ]
-              }
-            }
           ],
-          "name": "RECIPE"
-        }
+          "types": [
+              {
+                  "name": "RECIPE",
+                  "values": [
+                      {
+                          "name": {
+                              "value": "Creamy Caramelized Onion Burgers with Butter Lettuce Salad",
+                              "synonyms": [
+                                  "burger",
+                                  "burgers",
+                                  "Creamy Caramelized Onion Burgers"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "Spicy Penne Pasta with Zucchini and Capers",
+                              "synonyms": [
+                                  "pasta",
+                                  "red pasta",
+                                  "Spicy Penne Pasta"
+                              ]
+                          }
+                      }
+                  ]
+              }
+          ]
+      },
+      "dialog": {
+          "intents": [
+              {
+                  "name": "ChooseRecipe",
+                  "confirmationRequired": false,
+                  "prompts": {},
+                  "slots": [
+                      {
+                          "name": "recipe",
+                          "type": "RECIPE",
+                          "confirmationRequired": false,
+                          "elicitationRequired": true,
+                          "prompts": {
+                              "elicitation": "Elicit.Slot.1028849265600.201279541524"
+                          }
+                      }
+                  ]
+              }
+          ]
+      },
+      "prompts": [
+          {
+              "id": "Elicit.Slot.1028849265600.201279541524",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "What would you like to cook?"
+                  }
+              ]
+          }
       ]
-    }
   }
 }
