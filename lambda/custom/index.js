@@ -88,48 +88,73 @@ const handlers = {
           'currentStep': 0
         };
 
-        speech.say(`You chose ${resolvedRecipe} from ${resolvedMealkit}.`);
-        // TODO: list ingredients and emit next instead of below
-        this.emit(':tell', speech.ssml(true));
-        speech = new Speech();
-        this.emit(':responseReady');
+        // list the ingredients and read the first step
+        const currentRecipe = this.attributes.foodBox.currentRecipe;
+        const lastIngredient = currentRecipe.lastIngredient;
+        let currentStep = this.attributes.foodBox.currentStep;
+
+        speech.say(`You chose ${resolvedRecipe} from ${resolvedMealkit}. `);
+        speech.say('Grab the following ingredients: ');
+        while (currentStep <= lastIngredient) {
+          speech.say(currentRecipe.steps[currentStep]).pause('3s');
+          currentStep = ++this.attributes.foodBox.currentStep;
+        }
+        speech.say('Continue with the following steps: ');
+        this.emit('Next');
       }
     }
   },
 
   'Next': function () {
-    const currentRecipe = this.attributes.foodBox.currentRecipe;
-    const lastIngredient = this.attributes.foodBox.currentRecipe.lastIngredient;
-    const stepTotal = currentRecipe.steps.length;
-    let currentStep = this.attributes.foodBox.currentStep;
-    let speech = new Speech();
-    if (currentStep >= stepTotal) {
-      this.attributes.foodBox = {
-        'currentRecipe': {},
-        'currentStep': 0
-      };
-      speech.say('There are no more steps for this recipe. Goodbye!');
-    } else {
-      if (currentStep === 0) {
-        speech.say('Grab the following ingredients: ');
-      } else if (currentStep === lastIngredient + 1) {
-        speech.say('Continue with the following steps: ');
-      }
+
+    // no open recipe
+    if (_.isEmpty(this.attributes) || _.isEmpty(this.attributes.foodBox.currentRecipe)) {
+      speech.say(`You need to choose a recipe first.`);
+      this.emit(':tell', speech.ssml(true));
+      speech = new Speech();
+      this.emit(':responseReady');
+    }
+
+    // read the next step
+    else {
+      const currentRecipe = this.attributes.foodBox.currentRecipe;
+      const currentStep = this.attributes.foodBox.currentStep;
+      const stepTotal = currentRecipe.steps.length;
+
       speech.say(currentRecipe.steps[currentStep]);
       this.attributes.foodBox.currentStep++;
-    }
-    const speechOutput = speech.ssml(true);
-    this.emit(':tell', speechOutput);
+
+      // very last step
+      if (currentStep >= stepTotal - 1) {
+        speech.say(' This was the last step in this recipe. Enjoy your meal!');
+
+        this.attributes.foodBox = {
+          'currentRecipe': {},
+          'currentStep': 0
+        };
+      }
+
+    this.emit(':tell', speech.ssml(true));
+    speech = new Speech();
     this.emit(':responseReady');
+    }
   },
 
   'Repeat': function () {
-    const currentRecipe = this.attributes.foodBox.currentRecipe;
-    let currentStep = this.attributes.foodBox.currentStep;
-    if (currentStep > 0) {
-      this.attributes.foodBox.currentStep--;
+
+    // no open recipe
+    if (_.isEmpty(this.attributes) || _.isEmpty(this.attributes.foodBox.currentRecipe)) {
+      speech.say(`You need to choose a recipe first.`);
+      this.emit(':tell', speech.ssml(true));
+      speech = new Speech();
+      this.emit(':responseReady');
     }
-    this.emit('Next');
+
+    // decrement currentStep and run Next
+    else {
+      this.attributes.foodBox.currentStep--;
+      this.emit('Next');
+    }
   },
 
   'AMAZON.StopIntent': function() {
@@ -156,9 +181,9 @@ const handlers = {
       .pause('500ms')
       .say('"Alexa, ask Food Box for next".')
       .pause('500ms')
-      .say('To repeat a step, say:')
+      .say('To hear the previous step, say:')
       .pause('500ms')
-      .say('"Alexa, ask Food Box for last".')
+      .say('"Alexa, ask Food Box for previous".')
       .pause('500ms')
       .say('Happy cooking!');
     this.emit(':tell', speech.ssml(true));

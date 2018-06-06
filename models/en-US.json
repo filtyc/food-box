@@ -49,7 +49,8 @@
                       "switch recipes to {recipe}",
                       "switch recipe to {recipe}",
                       "switch recipe",
-                      "start"
+                      "start",
+                      "start {recipe} from {mealkit}"
                   ]
               },
               {
@@ -73,6 +74,7 @@
                       "repeat last step",
                       "repeat the last step",
                       "repeat",
+                      "previous",
                       "last"
                   ]
               }
