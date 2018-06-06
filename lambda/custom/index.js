@@ -13,6 +13,8 @@ const handlers = {
 
     // first time user
     if (_.isEmpty(this.attributes)) {
+
+      // set empty session attributes
       this.attributes.foodBox = {
         'currentRecipe': {},
         'currentStep': 0
@@ -38,36 +40,60 @@ const handlers = {
   },
 
   'ChooseRecipe': function () {
+
+    // obtain mealkit and recipe from user if either is missing
     if (this.event.request.dialogState !== 'COMPLETED') {
-      this.emit(':delegate');
-    } else {
-      let speech = new Speech();
-      this.attributes.foodBox = {
-        'currentRecipe': {},
-        'currentStep': 0
-      };
+
+      // elicit mealkit with a list of options
+      if (!this.event.request.intent.slots.mealkit.value) {
+        this.emit(':elicitSlot', 'mealkit', 'Choose a mealkit from: ');
+        // TODO: list options
+      }
+
+      // elicit recipe with a list of options
+      else if (!this.event.request.intent.slots.recipe.value) {
+        this.emit(':elicitSlot', 'recipe', 'Choose a recipe from: ');
+        // TODO: list options
+      }
+
+      // let alexa confirm that required slots are filled
+      else {
+        this.emit(':delegate');
+      }
+    }
+
+    // mealkit and recipe slots filled
+    else {
       const recipeRequested = this.event.request.intent.slots.recipe.value;
       const mealkitRequested = this.event.request.intent.slots.mealkit.value;
       const erRecipeStatus = this.event.request.intent.slots.recipe.resolutions.resolutionsPerAuthority[0].status.code;
       const erMealkitStatus = this.event.request.intent.slots.mealkit.resolutions.resolutionsPerAuthority[0].status.code;
-      if (erMealkitStatus === 'ER_SUCCESS_NO_MATCH') {
-        speech.say(`Sorry, ${mealkitRequested} is not one of the meal kit options.`);
-        // TODO: list availible options
+
+      // confirm validity of user's choice
+      if (erMealkitStatus === 'ER_SUCCESS_NO_MATCH' || erRecipeStatus === 'ER_SUCCESS_NO_MATCH') {
+        speech.say(`Sorry, I couldn't find ${recipeRequested} from ${mealkitRequested}.`);
+        this.emit(':tell', speech.ssml(true));
+        speech = new Speech();
+        this.emit(':responseReady');
       }
-      else if (erRecipeStatus === 'ER_SUCCESS_NO_MATCH') {
-        speech.say(`Sorry, I couldn't find a recipe for ${recipeRequested} from ${mealkitRequested}.`)
-        // TODO: list availible options
-      } else {
+
+      // set currentRecipe to the new choice and start reading it
+      else {
         const resolvedRecipe = this.event.request.intent.slots.recipe.resolutions.resolutionsPerAuthority[0].values[0].value.name;
         const resolvedMealkit = this.event.request.intent.slots.mealkit.resolutions.resolutionsPerAuthority[0].values[0].value.name;
         const recipes = JSON.parse(fs.readFileSync('recipes.json'));
-        this.attributes.foodBox.currentRecipe = recipes[resolvedMealkit][resolvedRecipe];
+
+        this.attributes.foodBox = {
+          'currentRecipe': recipes[resolvedMealkit][resolvedRecipe],
+          'currentStep': 0
+        };
+
         speech.say(`You chose ${resolvedRecipe} from ${resolvedMealkit}.`);
-        // TODO: list ingredients
+        // TODO: list ingredients and emit next instead of below
+        this.emit(':tell', speech.ssml(true));
+        speech = new Speech();
+        this.emit(':responseReady');
       }
-      const speechOutput = speech.ssml(true);
-      this.emit(':tell', speechOutput);
-      this.emit(':responseReady');
     }
   },
 
@@ -108,7 +134,6 @@ const handlers = {
 
   'AMAZON.StopIntent': function() {
     speech.say('Goodbye!');
-
     this.emit(':tell', speech.ssml(true));
     speech = new Speech();
     this.emit(':responseReady');
@@ -116,7 +141,6 @@ const handlers = {
 
   'AMAZON.CancelIntent': function() {
     speech.say('Goodbye!');
-
     this.emit(':tell', speech.ssml(true));
     speech = new Speech();
     this.emit(':responseReady');
@@ -137,7 +161,6 @@ const handlers = {
       .say('"Alexa, ask Food Box for last".')
       .pause('500ms')
       .say('Happy cooking!');
-
     this.emit(':tell', speech.ssml(true));
     speech = new Speech();
     this.emit(':responseReady');
@@ -145,7 +168,6 @@ const handlers = {
 
   'Unhandled': function () {
     speech.say(`Sorry, I didn't get that.`);
-
     this.emit('AMAZON.HelpIntent');
   },
 
