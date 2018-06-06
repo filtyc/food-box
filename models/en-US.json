@@ -48,7 +48,8 @@
                       "switch recipes",
                       "switch recipes to {recipe}",
                       "switch recipe to {recipe}",
-                      "switch recipe"
+                      "switch recipe",
+                      "start"
                   ]
               },
               {
@@ -71,7 +72,8 @@
                       "repeat the last ingredient",
                       "repeat last step",
                       "repeat the last step",
-                      "repeat"
+                      "repeat",
+                      "last"
                   ]
               }
           ],

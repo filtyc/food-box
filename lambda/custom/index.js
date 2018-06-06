@@ -5,50 +5,38 @@ const Speech = require('ssml-builder');
 const fs = require('fs');
 const _ = require('lodash');
 
-let helpSpeech = new Speech();
-helpSpeech
-  .say('to start cooking, say')
-  .pause('500ms')
-  .say('Alexa, ask Food Box for a recipe')
-  .pause('500ms')
-  .say('to hear the next step, say')
-  .pause('500ms')
-  .say('Alexa, ask Food Box for next')
-  .pause('500ms')
-  .say('to repeat a step, say')
-  .pause('500ms')
-  .say('Alexa, ask Food Box to repeat')
-  .pause('500ms')
-  .say('Happy cooking!')
-const HELP_MESSAGE = helpSpeech.ssml(true);
+let speech = new Speech();
 
 const handlers = {
+
   'LaunchRequest': function() {
-    const offerHelp = 'Say "Alexa, ask Food Box for help" to hear a full reminder on how to use this skill.';
-    let welcomeSpeech = '';
+
     // first time user
     if (_.isEmpty(this.attributes)) {
       this.attributes.foodBox = {
         'currentRecipe': {},
         'currentStep': 0
       };
-      welcomeSpeech = `Welcome to Food Box: an Alexa skill that can read meal kit recipes for you. ${HELP_MESSAGE}`;
+
+      speech.say(`Welcome to Food Box: an Alexa skill that can read meal kit recipes for you. `);
     }
-    // returning user with an open recipe
-    else if (!_.isEmpty(this.attributes.foodBox.currentRecipe)) {
-      const recipe = this.attributes.foodBox.currentRecipe.fullName;
-      const mealkit = this.attributes.foodBox.currentRecipe.mealkit;
-      let speech = new Speech();
-      speech.say(`Welcome back to Food Box! You were in the middle of cooking ${recipe} from ${mealkit}. ${offerHelp}`);
-      welcomeSpeech = speech.ssml(true);
-    }
-    // returning user with no open recipe
+
+    // returning user
     else {
-      welcomeSpeech = `Welcome back to Food Box! To start cooking, say "Alexa, ask Food Box for a recipe". Or, ${offerHelp}`;
+      speech.say('Welcome back to Food Box! ');
+
+      // user has a recipe opened
+      if (!_.isEmpty(this.attributes.foodBox.currentRecipe)) {
+        const recipe = this.attributes.foodBox.currentRecipe.name;
+        const mealkit = this.attributes.foodBox.currentRecipe.mealkit;
+
+        speech.say(`You are in the middle of cooking ${recipe} from ${mealkit}. `);
+      }
     }
-    this.emit(':tell', welcomeSpeech);
-    this.emit(':responseReady');
+
+    this.emit('AMAZON.HelpIntent');
   },
+
   'ChooseRecipe': function () {
     if (this.event.request.dialogState !== 'COMPLETED') {
       this.emit(':delegate');
@@ -82,6 +70,7 @@ const handlers = {
       this.emit(':responseReady');
     }
   },
+
   'Next': function () {
     const currentRecipe = this.attributes.foodBox.currentRecipe;
     const lastIngredient = this.attributes.foodBox.currentRecipe.lastIngredient;
@@ -107,6 +96,7 @@ const handlers = {
     this.emit(':tell', speechOutput);
     this.emit(':responseReady');
   },
+
   'Repeat': function () {
     const currentRecipe = this.attributes.foodBox.currentRecipe;
     let currentStep = this.attributes.foodBox.currentStep;
@@ -115,25 +105,54 @@ const handlers = {
     }
     this.emit('Next');
   },
+
   'AMAZON.StopIntent': function() {
-    this.emit(':tell', 'Goodbye!');
+    speech.say('Goodbye!');
+
+    this.emit(':tell', speech.ssml(true));
+    speech = new Speech();
     this.emit(':responseReady');
   },
+
   'AMAZON.CancelIntent': function() {
-    this.emit(':tell', 'Goodbye!');
+    speech.say('Goodbye!');
+
+    this.emit(':tell', speech.ssml(true));
+    speech = new Speech();
     this.emit(':responseReady');
   },
+
   'AMAZON.HelpIntent': function () {
-    this.emit(':tell', HELP_MESSAGE);
+    speech
+      .say('To start cooking, say:')
+      .pause('500ms')
+      .say('"Alexa, ask Food Box to start".')
+      .pause('500ms')
+      .say('To hear the next step, say:')
+      .pause('500ms')
+      .say('"Alexa, ask Food Box for next".')
+      .pause('500ms')
+      .say('To repeat a step, say:')
+      .pause('500ms')
+      .say('"Alexa, ask Food Box for last".')
+      .pause('500ms')
+      .say('Happy cooking!');
+
+    this.emit(':tell', speech.ssml(true));
+    speech = new Speech();
     this.emit(':responseReady');
   },
+
   'Unhandled': function () {
-    this.emit(':tell', `Sorry, I didn't get that.`);
-    this.emit(':responseReady');
+    speech.say(`Sorry, I didn't get that.`);
+
+    this.emit('AMAZON.HelpIntent');
   },
+
   'SessionEndedRequest': function() {
     this.emit(':saveState', true);
   }
+
 };
 
 exports.handler = function(event, context, callback) {

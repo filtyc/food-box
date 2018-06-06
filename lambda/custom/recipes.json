@@ -1,7 +1,7 @@
 {
   "Blue Apron": {
     "Chrissy Teigen's Garlic & Soy-Glazed Shrimp": {
-      "fullName": "Chrissy Teigen's Garlic & Soy-Glazed Shrimp",
+      "name": "Chrissy Teigen's Garlic & Soy-Glazed Shrimp",
       "mealkit": "Blue Apron",
       "steps": [
         "10 oz Shrimp",
@@ -66,7 +66,7 @@
       "lastIngredient": 12
     },
     "Spicy Penne Pasta with Zucchini & Capers": {
-      "fullName": "Spicy Penne Pasta with Zucchini & Capers",
+      "name": "Spicy Penne Pasta with Zucchini & Capers",
       "mealkit": "Blue Apron",
       "steps": [
         "1/2 lb Penne Pasta",
@@ -81,7 +81,7 @@
   },
   "Purple Carrot": {
     "Creamy Caramelized Onion Burgers with Butter Lettuce Salad": {
-      "fullName": "Creamy Caramelized Onion Burgers with Butter Lettuce Salad",
+      "name": "Creamy Caramelized Onion Burgers with Butter Lettuce Salad",
       "mealkit": "Purple Carrot",
       "steps": [
         "10 oz Ground Beef",
@@ -94,7 +94,7 @@
       "lastIngredient": 2
     },
     "Spicy Penne Pasta with Zucchini & Capers": {
-      "fullName": "Spicy Penne Pasta with Zucchini & Capers",
+      "name": "Spicy Penne Pasta with Zucchini & Capers",
       "mealkit": "Purple Carrot",
       "steps": [
         "1/2 lb Penne Pasta",
