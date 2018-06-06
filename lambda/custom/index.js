@@ -5,7 +5,26 @@ const Speech = require('ssml-builder');
 const fs = require('fs');
 const _ = require('lodash');
 
+const recipes = JSON.parse(fs.readFileSync('recipes.json'));
 let speech = new Speech();
+
+const listMealkits = () => {
+  let list = '';
+  for (let mealkit in recipes) {
+    list += mealkit;
+    list += ', ';
+  }
+  return list.replace(/..$/, '.');
+};
+
+const listRecipes = (mealkit) => {
+  let list = '';
+  for (let recipe in recipes[mealkit]) {
+    list += recipe;
+    list += ', ';
+  }
+  return list.replace(/..$/, '.');
+};
 
 const handlers = {
 
@@ -46,14 +65,29 @@ const handlers = {
 
       // elicit mealkit with a list of options
       if (!this.event.request.intent.slots.mealkit.value) {
-        this.emit(':elicitSlot', 'mealkit', 'Choose a mealkit from: ');
-        // TODO: list options
+        speech.say(`Choose one of the following meal kits: ${listMealkits()}`);
+        this.emit(':elicitSlot', 'mealkit', speech.ssml(true));
+        speech = new Speech();
       }
 
       // elicit recipe with a list of options
       else if (!this.event.request.intent.slots.recipe.value) {
-        this.emit(':elicitSlot', 'recipe', 'Choose a recipe from: ');
-        // TODO: list options
+        const mealkitRequested = this.event.request.intent.slots.mealkit.value;
+        const erMealkitStatus = this.event.request.intent.slots.mealkit.resolutions.resolutionsPerAuthority[0].status.code;
+
+        // check that a valid mealkit was provided or recipes can't be listed
+        if (erMealkitStatus === 'ER_SUCCESS_MATCH') {
+          const resolvedMealkit = this.event.request.intent.slots.mealkit.resolutions.resolutionsPerAuthority[0].values[0].value.name;
+
+          speech.say(`Choose one of the following recipes: ${listRecipes(resolvedMealkit)}`);
+          this.emit(':elicitSlot', 'recipe', speech.ssml(true));
+          speech = new Speech();
+        } else {
+          speech.say(`Sorry, I couldn't find ${mealkitRequested}.`);
+          this.emit(':tell', speech.ssml(true));
+          speech = new Speech();
+          this.emit(':responseReady');
+        }
       }
 
       // let alexa confirm that required slots are filled
@@ -70,7 +104,7 @@ const handlers = {
       const erMealkitStatus = this.event.request.intent.slots.mealkit.resolutions.resolutionsPerAuthority[0].status.code;
 
       // confirm validity of user's choice
-      if (erMealkitStatus === 'ER_SUCCESS_NO_MATCH' || erRecipeStatus === 'ER_SUCCESS_NO_MATCH') {
+      if (erMealkitStatus !== 'ER_SUCCESS_MATCH' || erRecipeStatus !== 'ER_SUCCESS_MATCH') {
         speech.say(`Sorry, I couldn't find ${recipeRequested} from ${mealkitRequested}.`);
         this.emit(':tell', speech.ssml(true));
         speech = new Speech();
@@ -81,7 +115,6 @@ const handlers = {
       else {
         const resolvedRecipe = this.event.request.intent.slots.recipe.resolutions.resolutionsPerAuthority[0].values[0].value.name;
         const resolvedMealkit = this.event.request.intent.slots.mealkit.resolutions.resolutionsPerAuthority[0].values[0].value.name;
-        const recipes = JSON.parse(fs.readFileSync('recipes.json'));
 
         this.attributes.foodBox = {
           'currentRecipe': recipes[resolvedMealkit][resolvedRecipe],
