@@ -35,47 +35,46 @@
                           "samples": [
                               "{recipe}"
                           ]
+                      },
+                      {
+                          "name": "recipeChoicePhrase",
+                          "type": "RECIPE_CHOICE_PHRASE"
                       }
                   ],
                   "samples": [
-                      "read me the recipe for {recipe} from {mealkit}",
-                      "read a recipe",
-                      "read me a recipe",
-                      "read me the recipe for {recipe}",
-                      "let's cook",
-                      "let's cook {recipe}",
-                      "{recipe}",
-                      "switch recipes",
-                      "switch recipes to {recipe}",
-                      "switch recipe to {recipe}",
-                      "switch recipe",
-                      "start",
-                      "start {recipe} from {mealkit}"
+                      "{recipeChoicePhrase} for {recipe} from {mealkit}",
+                      "{recipeChoicePhrase} {recipe} from {mealkit}",
+                      "{recipeChoicePhrase}"
                   ]
               },
               {
                   "name": "Next",
-                  "slots": [],
+                  "slots": [
+                      {
+                          "name": "nextPhrase",
+                          "type": "NEXT_PHRASE"
+                      }
+                  ],
                   "samples": [
-                      "next one",
-                      "what's next",
-                      "next ingredient",
-                      "next step",
-                      "next"
+                      "{nextPhrase} step",
+                      "go to {nextPhrase} step",
+                      "go to {nextPhrase}",
+                      "{nextPhrase}"
                   ]
               },
               {
                   "name": "Repeat",
-                  "slots": [],
+                  "slots": [
+                      {
+                          "name": "repeatPhrase",
+                          "type": "REPEAT_PHRASE"
+                      }
+                  ],
                   "samples": [
-                      "repeat the last thing you said",
-                      "repeat last ingredient",
-                      "repeat the last ingredient",
-                      "repeat last step",
-                      "repeat the last step",
-                      "repeat",
-                      "previous",
-                      "last"
+                      "go to {repeatPhrase} step",
+                      "{repeatPhrase} step",
+                      "go to {repeatPhrase}",
+                      "{repeatPhrase}"
                   ]
               }
           ],
@@ -87,10 +86,8 @@
                           "name": {
                               "value": "Chrissy Teigen's Garlic & Soy-Glazed Shrimp",
                               "synonyms": [
-                                "shrimp",
-                                "garlic and shrimp",
-                                "Garlic & Soy-Glazed Shrimp",
-                                "Chrissy Teigen's Garlic & Soy-Glazed Shrimp"
+                                  "shrimp",
+                                  "Chrissy Teigen's Garlic & Soy-Glazed Shrimp"
                               ]
                           }
                       },
@@ -98,9 +95,8 @@
                           "name": {
                               "value": "Spicy Penne Pasta with Zucchini & Capers",
                               "synonyms": [
-                                  "pasta",
-                                  "red pasta",
-                                  "Spicy Penne Pasta"
+                                  "Spicy Penne Pasta with Zucchini & Capers",
+                                  "pasta"
                               ]
                           }
                       }
@@ -117,6 +113,111 @@
                       {
                           "name": {
                               "value": "Blue Apron"
+                          }
+                      }
+                  ]
+              },
+              {
+                  "name": "RECIPE_CHOICE_PHRASE",
+                  "values": [
+                      {
+                          "name": {
+                              "value": "switch recipes"
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "switch recipe to"
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "start the recipe"
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "cook the recipe"
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "read the recipe"
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "start a recipe"
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "cook a recipe"
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "read a recipe"
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "cook"
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "read"
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "start"
+                          }
+                      }
+                  ]
+              },
+              {
+                  "name": "NEXT_PHRASE",
+                  "values": [
+                      {
+                          "name": {
+                              "value": "the next"
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "next"
+                          }
+                      }
+                  ]
+              },
+              {
+                  "name": "REPEAT_PHRASE",
+                  "values": [
+                      {
+                          "name": {
+                              "value": "the previous"
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "previous"
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "the last"
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "last"
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "repeat"
                           }
                       }
                   ]
@@ -147,6 +248,13 @@
                           "prompts": {
                               "elicitation": "Elicit.Slot.1028849265600.201279541524"
                           }
+                      },
+                      {
+                          "name": "recipeChoicePhrase",
+                          "type": "RECIPE_CHOICE_PHRASE",
+                          "confirmationRequired": false,
+                          "elicitationRequired": false,
+                          "prompts": {}
                       }
                   ]
               }

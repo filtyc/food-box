@@ -214,9 +214,9 @@ const handlers = {
       .pause('500ms')
       .say('"Alexa, ask Food Box for next".')
       .pause('500ms')
-      .say('To hear the previous step, say:')
+      .say('To repeat a step, say:')
       .pause('500ms')
-      .say('"Alexa, ask Food Box for previous".')
+      .say('"Alexa, ask Food Box to repeat".')
       .pause('500ms')
       .say('Happy cooking!');
     this.emit(':tell', speech.ssml(true));
