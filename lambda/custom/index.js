@@ -90,6 +90,36 @@ const handlers = {
         }
       }
 
+      // confirm the intent before moving forward
+      else if (this.event.request.intent.confirmationStatus === 'NONE') {
+        const recipeRequested = this.event.request.intent.slots.recipe.value;
+        const mealkitRequested = this.event.request.intent.slots.mealkit.value;
+        const erRecipeStatus = this.event.request.intent.slots.recipe.resolutions.resolutionsPerAuthority[0].status.code;
+
+        // check that a valid recipe was provided before confirming the intent
+        if (erRecipeStatus === 'ER_SUCCESS_MATCH') {
+          const resolvedMealkit = this.event.request.intent.slots.mealkit.resolutions.resolutionsPerAuthority[0].values[0].value.name;
+          const resolvedRecipe = this.event.request.intent.slots.recipe.resolutions.resolutionsPerAuthority[0].values[0].value.name;
+
+          speech.say(`So you are cooking ${resolvedRecipe} from ${resolvedMealkit}, right?`);
+          this.emit(':confirmIntent', speech.ssml(true))
+          speech = new Speech();
+        } else {
+          speech.say(`Sorry, I couldn't find ${recipeRequested} from ${mealkitRequested}.`);
+          this.emit(':tell', speech.ssml(true));
+          speech = new Speech();
+          this.emit(':responseReady');
+        }
+      }
+
+      // intent's confirmation was denied
+      else if (this.event.request.intent.confirmationStatus === 'DENIED') {
+        speech.say(`Ok, canceling.`);
+        this.emit(':tell', speech.ssml(true));
+        speech = new Speech();
+        this.emit(':responseReady');
+      }
+
       // let alexa confirm that required slots are filled
       else {
         this.emit(':delegate');
@@ -103,7 +133,7 @@ const handlers = {
       const erRecipeStatus = this.event.request.intent.slots.recipe.resolutions.resolutionsPerAuthority[0].status.code;
       const erMealkitStatus = this.event.request.intent.slots.mealkit.resolutions.resolutionsPerAuthority[0].status.code;
 
-      // confirm validity of user's choice
+      // confirm validity of user's choice ("start {recipe} from {mealkit}" doesn't get checked otherwise)
       if (erMealkitStatus !== 'ER_SUCCESS_MATCH' || erRecipeStatus !== 'ER_SUCCESS_MATCH') {
         speech.say(`Sorry, I couldn't find ${recipeRequested} from ${mealkitRequested}.`);
         this.emit(':tell', speech.ssml(true));

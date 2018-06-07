@@ -84,10 +84,17 @@
                   "values": [
                       {
                           "name": {
+                              "value": "Buffalo Artichoke Calzone",
+                              "synonyms": [
+                                  "calzone"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
                               "value": "Chrissy Teigen's Garlic & Soy-Glazed Shrimp",
                               "synonyms": [
-                                  "shrimp",
-                                  "Chrissy Teigen's Garlic & Soy-Glazed Shrimp"
+                                  "shrimp"
                               ]
                           }
                       },
@@ -95,7 +102,6 @@
                           "name": {
                               "value": "Spicy Penne Pasta with Zucchini & Capers",
                               "synonyms": [
-                                  "Spicy Penne Pasta with Zucchini & Capers",
                                   "pasta"
                               ]
                           }
