@@ -63,10 +63,10 @@
         "Serve the spicy pepper sauce and remaining lime wedges on the side.",
         "Enjoy."
       ],
-      "lastIngredient": 12
+      "lastIngredientIndex": 12
     },
-    "Spicy Penne Pasta with Zucchini & Capers": {
-      "name": "Spicy Penne Pasta with Zucchini & Capers",
+    "Spicy Penne Pasta": {
+      "name": "Spicy Penne Pasta",
       "mealkit": "Blue Apron",
       "steps": [
         "1/2 lb Penne Pasta.",
@@ -76,7 +76,50 @@
         "Wash and dry the fresh produce.",
         "Quarter the zucchini lengthwise, then cut crosswise into 1/4-inch- thick pieces."
       ],
-      "lastIngredient": 2
+      "lastIngredientIndex": 2
+    },
+    "Saffron & Yellow Tomato Risotto": {
+      "name": "Saffron & Yellow Tomato Risotto",
+      "mealkit": "Blue Apron",
+      "steps": [
+        "1 cup Carnaroli Rice.",
+        "1 14-Oz Can Whole Peeled Yellow Tomatoes.",
+        "2 cloves Garlic.",
+        "1 Zucchini.",
+        "1 pinch Saffron.",
+        "2 Tbsps Butter.",
+        "2 Tbsps Mascarpone Cheese.",
+        "1 Shallot.",
+        "¼ tsp Crushed Red Pepper Flakes.",
+        "1 oz Pecorino Romano Cheese.",
+        "1 oz Peruvian Kalamata Olives.",
+        "Wash and dry the fresh produce.",
+        "Peel and finely chop the shallot.",
+        "Peel and roughly chop the garlic.",
+        "Halve the zucchini lengthwise; cut crosswise into 1/2-inch-thick pieces.",
+        "Using the flat side of your knife, smash the olives; remove and discard the pits, then roughly chop.",
+        "Place the tomatoes in a bowl; gently break apart with your hands.",
+        "Grate the Pecorino cheese on the small side of a box grater.",
+        "In a medium pot, heat 2 teaspoons of olive oil on medium-high until hot.",
+        "Add the chopped shallot, half the chopped garlic, and as much of the red pepper flakes as you’d like, depending on how spicy you’d like the dish to be.",
+        "Season with salt and pepper.",
+        "Cook, stirring frequently, 2 to 3 minutes, or until slightly softened and fragrant.",
+        "Add the rice, saffron, tomatoes, and 2 1/4 cups of water (carefully, as the liquid may splatter); heat to boiling on high.",
+        "Once boiling, reduce the heat to medium-high.",
+        "Cook, stirring occasionally, 15 to 17 minutes, or until most of the liquid is absorbed and the rice is al dente (still slightly firm to the bite).",
+        "Turn off the heat.",
+        "Add the butter and mascarpone cheese; stir until melted and thoroughly combined.",
+        "Season with salt and pepper to taste.",
+        "Once the risotto has cooked about 10 minutes, in a medium pan (nonstick, if you have one), heat 2 teaspoons of olive oil on medium-high until hot.",
+        "Add the sliced zucchini in an even layer and cook, without stirring, 3 to 4 minutes, or until lightly browned.",
+        "Add the remaining chopped garlic; season with salt and pepper.",
+        "Cook, stirring constantly, 2 to 3 minutes, or until softened.",
+        "Turn off the heat and stir in the chopped olives.",
+        "Season with salt and pepper to taste.",
+        "Serve the finished risotto topped with the cooked zucchini and grated Pecorino cheese.",
+        "Enjoy!."
+      ],
+      "lastIngredientIndex": 10
     }
   },
   "Purple Carrot": {
@@ -123,20 +166,80 @@
         "Once the calzone is ready, toss the spring mix (reserving half for the Chickpea Stuffed Avocado recipe) and sliced cucumber with the dressing in the large bowl.",
         "Cut the Buffalo artichoke calzone into slices and serve with and the spring greens salad and bleu cheese dressing on the side."
       ],
-      "lastIngredient": 10
+      "lastIngredientIndex": 10
     },
-    "Spicy Penne Pasta with Zucchini & Capers": {
-      "name": "Spicy Penne Pasta with Zucchini & Capers",
+    "Mongolian Seitan Lettuce Cups": {
+      "name": "Mongolian Seitan Lettuce Cups",
       "mealkit": "Purple Carrot",
       "steps": [
-        "1/2 lb Penne Pasta",
-        "1 Zucchini",
-        "2 cloves Garlic",
-        "Heat a medium pot of salted water to boiling on high.",
-        "Wash and dry the fresh produce.",
-        "Quarter the zucchini lengthwise, then cut crosswise into 1/4-inch- thick pieces."
+        "¾ cup short grain rice.",
+        "1 package seitan.",
+        "3 oz celery.",
+        "Fresh ginger.",
+        "2 cloves garlic.",
+        "1 cucumber.",
+        "2 Thai chiles.",
+        "2 tbsp pine nuts.",
+        "2 tbsp tamari.",
+        "1 tbsp rice vinegar.",
+        "1 packet turbinado sugar.",
+        "1 head butter lettuce.",
+        "Combine the short grain rice, 1¼ cups of water, and a pinch of salt in a small saucepan and bring to a boil.",
+        "Cover, reduce heat to low, and cook until the grains are tender and all water is absorbed, about 15 to 18 minutes.",
+        "Thinly slice the seitan.",
+        "Thinly slice the celery.",
+        "Peel and mince 1 tsp ginger (save any remaining for your own use).",
+        "Peel and mince 2 cloves garlic.",
+        "Small dice the cucumber.",
+        "Thinly slice the Thai chiles.",
+        "Place a large nonstick skillet over medium-high heat with 2 tbsp vegetable oil.",
+        "Once hot, add the sliced seitan and cook, tossing frequently, until crisp in places, about 4 to 5 minutes.",
+        "Add the sliced celery, minced ginger, minced garlic, pine nuts, and as much of the Thai chile as you’d like.",
+        "Cook, stirring frequently, until fragrant, about 1 to 2 minutes.",
+        "Add the tamari, rice vinegar, turbinado sugar, and ¼ cup water to the skillet.",
+        "Toss well to combine, and cook until the sauce is sticky, about 1 minute.",
+        "Taste and adjust seasoning with salt.",
+        "Separate the butter lettuce leaves, removing any grit from between the leaves.",
+        "Fill the lettuce leaves with some sticky rice and top each with the Mongolian seitan and diced cucumbers."
       ],
-      "lastIngredient": 2
+      "lastIngredientIndex": 11
+    },
+    "Chickpea Stuffed Avocado": {
+      "name": "Chickpea Stuffed Avocado",
+      "mealkit": "Purple Carrot",
+      "steps": [
+        "½ cup red quinoa.",
+        "1 scallion.",
+        "2 oz celery.",
+        "4 oz red grapes.",
+        "1 apple.",
+        "1 lemon.",
+        "1 can chickpeas.",
+        "¼ cup Follow Your Heart® Vegenaise®.",
+        "1 tsp curry powder.",
+        "1 avocado.",
+        "4 oz spring mix.",
+        "Combine the red quinoa, ¾ cup water, and a pinch of salt in a small saucepan and bring to a boil.",
+        "Cover, reduce heat to low, and cook until the water is absorbed and the grains are tender, about 12 to 15 minutes.",
+        "Thinly slice the scallion.",
+        "Small dice the celery.",
+        "Halve the red grapes.",
+        "Thinly slice the apple.",
+        "Zest and halve the lemon.",
+        "Drain and rinse the chickpeas.",
+        "Add the chickpeas to a large bowl along with the juice from half the lemon, Vegenaise, curry powder, ¼ tsp salt, and a good pinch of pepper.",
+        "Mash some of the chickpeas with the back of a fork and mix well to combine.",
+        "Add the scallion, celery, and half the grapes and gently mix them in.",
+        "Add the spring mix (reserving half for the Buffalo Artichoke Calzone) to another large bowl and add the cooked red quinoa, sliced apple, lemon zest, juice from the remaining lemon half, 2 tbsp olive oil, and a pinch of salt and pepper.",
+        "Toss the quinoa salad well to combine.",
+        "Taste and adjust seasoning with salt.",
+        "Halve the avocado.",
+        "Remove the pit and scoop the flesh out of each half in one piece.",
+        "Divide the quinoa salad between plates, and top each with an avocado half.",
+        "Stuff the avocado halves with the chickpea salad.",
+        "Top with the remaining grapes."
+      ],
+      "lastIngredientIndex": 10
     }
   }
 }

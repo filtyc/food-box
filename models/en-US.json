@@ -84,14 +84,6 @@
                   "values": [
                       {
                           "name": {
-                              "value": "Buffalo Artichoke Calzone",
-                              "synonyms": [
-                                  "calzone"
-                              ]
-                          }
-                      },
-                      {
-                          "name": {
                               "value": "Chrissy Teigen's Garlic & Soy-Glazed Shrimp",
                               "synonyms": [
                                   "shrimp"
@@ -100,9 +92,41 @@
                       },
                       {
                           "name": {
-                              "value": "Spicy Penne Pasta with Zucchini & Capers",
+                              "value": "Saffron & Yellow Tomato Risotto",
+                              "synonyms": [
+                                  "risotto"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "Spicy Penne Pasta",
                               "synonyms": [
                                   "pasta"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "Buffalo Artichoke Calzone",
+                              "synonyms": [
+                                  "calzone"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "Mongolian Seitan Lettuce Cups",
+                              "synonyms": [
+                                  "seitan"
+                              ]
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "Chickpea Stuffed Avocado",
+                              "synonyms": [
+                                  "avocado"
                               ]
                           }
                       }

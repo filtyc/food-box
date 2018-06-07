@@ -171,12 +171,12 @@ const handlers = {
       const currentRecipe = this.attributes.foodBox.currentRecipe;
       let currentStep = this.attributes.foodBox.currentStep;
       const stepTotal = currentRecipe.steps.length;
-      const lastIngredient = currentRecipe.lastIngredient;
+      const lastIngredientIndex = currentRecipe.lastIngredientIndex;
 
       // very first step
       if (currentStep === 0) {
         speech.say('Grab the following ingredients: ');
-        while (currentStep <= lastIngredient) {
+        while (currentStep <= lastIngredientIndex) {
           speech.say(currentRecipe.steps[currentStep]).pause('3s');
           currentStep = ++this.attributes.foodBox.currentStep;
         }
@@ -204,7 +204,7 @@ const handlers = {
 
   'Repeat': function () {
     const currentStep = this.attributes.foodBox.currentStep;
-    const lastIngredient = this.attributes.foodBox.currentRecipe.lastIngredient;
+    const lastIngredientIndex = this.attributes.foodBox.currentRecipe.lastIngredientIndex;
 
     // no open recipe
     if (_.isEmpty(this.attributes) || _.isEmpty(this.attributes.foodBox.currentRecipe)) {
@@ -216,7 +216,7 @@ const handlers = {
 
 
     // first step includes all ingredients
-    else if (currentStep === lastIngredient + 2) {
+    else if (currentStep === lastIngredientIndex + 2) {
       this.attributes.foodBox.currentStep = 0;
       this.emit('Next');
     }
