@@ -101,7 +101,7 @@ const handlers = {
           const resolvedMealkit = this.event.request.intent.slots.mealkit.resolutions.resolutionsPerAuthority[0].values[0].value.name;
           const resolvedRecipe = this.event.request.intent.slots.recipe.resolutions.resolutionsPerAuthority[0].values[0].value.name;
 
-          speech.say(`So you are cooking ${resolvedRecipe} from ${resolvedMealkit}, right?`);
+          speech.say(`So, you are cooking ${resolvedRecipe} from ${resolvedMealkit}. Correct?`);
           this.emit(':confirmIntent', speech.ssml(true))
           speech = new Speech();
         } else {
@@ -151,18 +151,6 @@ const handlers = {
           'currentStep': 0
         };
 
-        // list the ingredients and read the first step
-        const currentRecipe = this.attributes.foodBox.currentRecipe;
-        const lastIngredient = currentRecipe.lastIngredient;
-        let currentStep = this.attributes.foodBox.currentStep;
-
-        speech.say(`You chose ${resolvedRecipe} from ${resolvedMealkit}. `);
-        speech.say('Grab the following ingredients: ');
-        while (currentStep <= lastIngredient) {
-          speech.say(currentRecipe.steps[currentStep]).pause('3s');
-          currentStep = ++this.attributes.foodBox.currentStep;
-        }
-        speech.say('Continue with the following steps: ');
         this.emit('Next');
       }
     }
@@ -181,8 +169,19 @@ const handlers = {
     // read the next step
     else {
       const currentRecipe = this.attributes.foodBox.currentRecipe;
-      const currentStep = this.attributes.foodBox.currentStep;
+      let currentStep = this.attributes.foodBox.currentStep;
       const stepTotal = currentRecipe.steps.length;
+      const lastIngredient = currentRecipe.lastIngredient;
+
+      // very first step
+      if (currentStep === 0) {
+        speech.say('Grab the following ingredients: ');
+        while (currentStep <= lastIngredient) {
+          speech.say(currentRecipe.steps[currentStep]).pause('3s');
+          currentStep = ++this.attributes.foodBox.currentStep;
+        }
+        speech.say('Continue with the following steps: ');
+      }
 
       speech.say(currentRecipe.steps[currentStep]);
       this.attributes.foodBox.currentStep++;
@@ -204,6 +203,8 @@ const handlers = {
   },
 
   'Repeat': function () {
+    const currentStep = this.attributes.foodBox.currentStep;
+    const lastIngredient = this.attributes.foodBox.currentRecipe.lastIngredient;
 
     // no open recipe
     if (_.isEmpty(this.attributes) || _.isEmpty(this.attributes.foodBox.currentRecipe)) {
@@ -211,6 +212,13 @@ const handlers = {
       this.emit(':tell', speech.ssml(true));
       speech = new Speech();
       this.emit(':responseReady');
+    }
+
+
+    // first step includes all ingredients
+    else if (currentStep === lastIngredient + 2) {
+      this.attributes.foodBox.currentStep = 0;
+      this.emit('Next');
     }
 
     // decrement currentStep and run Next
