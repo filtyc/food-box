@@ -171,7 +171,7 @@ const handlers = {
         }
 
         speech.say(currentRecipe.steps[currentStep]);
-        this.attributes.foodBox.currentStep++;
+        currentStep = ++this.attributes.foodBox.currentStep;
       }
 
       // very last step
@@ -181,8 +181,8 @@ const handlers = {
         speech.say(' This was the last step in this recipe. Enjoy your meal!');
       }
 
-      // display image if screen availible
-      if (supportsDisplay.call(this)) {
+      // display image
+      if (supportsDisplay.call(this) && currentStep !== lastIngredientIndex + 1) {
         let bodyTemplate = new Alexa.templateBuilders.BodyTemplate7Builder();
         bodyTemplate.setImage(Alexa.utils.ImageUtils.makeImage(imageURLs[currentImage]));
         let template = bodyTemplate.setTitle('Food Box').build();
@@ -202,6 +202,8 @@ const handlers = {
   'Repeat': function () {
     const currentStep = this.attributes.foodBox.currentStep;
     const lastIngredientIndex = this.attributes.foodBox.currentRecipe.lastIngredientIndex;
+    const imageChangeIndexes = this.attributes.foodBox.currentRecipe.imageChangeIndexes;
+    let currentImage = this.attributes.foodBox.currentImage;
 
     // no open recipe
     if (_.isEmpty(this.attributes) || _.isEmpty(this.attributes.foodBox.currentRecipe)) {
@@ -209,15 +211,24 @@ const handlers = {
       elicitRecipe.call(this);
     }
 
-    // first step includes all ingredients
-    else if (currentStep === lastIngredientIndex + 1) {
-      this.attributes.foodBox.currentStep = 0;
-      this.emit('Next');
-    }
-
-    // decrement currentStep and run Next
+    // recipe opened
     else {
-      this.attributes.foodBox.currentStep--;
+
+      // very first step
+      if (currentStep === lastIngredientIndex + 1) {
+        this.attributes.foodBox.currentStep = 0;
+      }
+
+      // middle steps
+      else {
+        this.attributes.foodBox.currentStep--;
+
+        // step with image change
+        if (imageChangeIndexes[currentImage - 1] === currentStep - 1) {
+          this.attributes.foodBox.currentImage--;
+        }
+      }
+
       this.emit('Next');
     }
   },
