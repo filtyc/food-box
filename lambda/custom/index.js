@@ -8,39 +8,17 @@ const _ = require('lodash');
 const recipes = JSON.parse(fs.readFileSync('recipes.json'));
 let speech = new Speech();
 
-const listMealkits = () => {
-  let list = '';
-  for (let mealkit in recipes) {
-    list += mealkit;
-    list += ', ';
-  }
-  return list.replace(/..$/, '.');
-};
-
-const listRecipes = (mealkit) => {
-  let list = '';
-  for (let recipe in recipes[mealkit]) {
-    list += recipe;
-    list += ', ';
-  }
-  return list.replace(/..$/, '.');
-};
-
+// intent handlers
 const handlers = {
 
   'LaunchRequest': function() {
 
     // first time user
     if (_.isEmpty(this.attributes)) {
-
-      // set empty session attributes
-      this.attributes.foodBox = {
-        'currentRecipe': {},
-        'currentStep': 0,
-        'currentImage': 0
-      };
+      setAttributes.call(this, {});
 
       speech.say(`Welcome to Food Box: an Alexa skill that can read meal kit recipes for you. `);
+      this.emit('AMAZON.HelpIntent');
     }
 
     // returning user
@@ -52,11 +30,15 @@ const handlers = {
         const recipe = this.attributes.foodBox.currentRecipe.name;
         const mealkit = this.attributes.foodBox.currentRecipe.mealkit;
 
-        speech.say(`You are in the middle of cooking ${recipe} from ${mealkit}. `);
+        speech.say(`You are in the middle of cooking ${recipe} from ${mealkit}. The last step was: `);
+        this.emit('Repeat');
+      }
+
+      // user has no recipe opened
+      else {
+        elicitRecipe.call(this);
       }
     }
-
-    this.emit('AMAZON.HelpIntent');
   },
 
   'ChooseRecipe': function () {
@@ -85,9 +67,7 @@ const handlers = {
           speech = new Speech();
         } else {
           speech.say(`Sorry, I couldn't find ${mealkitRequested}.`);
-          this.response.speak(speech.ssml(true));
-          speech = new Speech();
-          this.emit(':responseReady');
+          sayIt.call(this);
         }
       }
 
@@ -107,18 +87,16 @@ const handlers = {
           speech = new Speech();
         } else {
           speech.say(`Sorry, I couldn't find ${recipeRequested} from ${mealkitRequested}.`);
-          this.response.speak(speech.ssml(true));
-          speech = new Speech();
-          this.emit(':responseReady');
+          sayIt.call(this);
         }
       }
 
       // intent's confirmation was denied
       else if (this.event.request.intent.confirmationStatus === 'DENIED') {
+        setAttributes(this, {});
+
         speech.say(`Ok, canceling.`);
-        this.response.speak(speech.ssml(true));
-        speech = new Speech();
-        this.emit(':responseReady');
+        sayIt.call(this);
       }
 
       // let alexa confirm that required slots are filled
@@ -137,9 +115,7 @@ const handlers = {
       // confirm validity of user's choice ("start {recipe} from {mealkit}" doesn't get checked otherwise)
       if (erMealkitStatus !== 'ER_SUCCESS_MATCH' || erRecipeStatus !== 'ER_SUCCESS_MATCH') {
         speech.say(`Sorry, I couldn't find ${recipeRequested} from ${mealkitRequested}.`);
-        this.response.speak(speech.ssml(true));
-        speech = new Speech();
-        this.emit(':responseReady');
+        sayIt.call(this);
       }
 
       // set currentRecipe to the new choice and start reading it
@@ -147,11 +123,7 @@ const handlers = {
         const resolvedRecipe = this.event.request.intent.slots.recipe.resolutions.resolutionsPerAuthority[0].values[0].value.name;
         const resolvedMealkit = this.event.request.intent.slots.mealkit.resolutions.resolutionsPerAuthority[0].values[0].value.name;
 
-        this.attributes.foodBox = {
-          'currentRecipe': recipes[resolvedMealkit][resolvedRecipe],
-          'currentStep': 0,
-          'currentImage': 0
-        };
+        setAttributes.call(this, recipes[resolvedMealkit][resolvedRecipe]);
 
         this.emit('Next');
       }
@@ -162,10 +134,8 @@ const handlers = {
 
     // no open recipe
     if (_.isEmpty(this.attributes) || _.isEmpty(this.attributes.foodBox.currentRecipe)) {
-      speech.say(`You need to choose a recipe first.`);
-      this.response.speak(speech.ssml(true));
-      speech = new Speech();
-      this.emit(':responseReady');
+      speech.say(`You need to choose a recipe first. `);
+      elicitRecipe.call(this);
     }
 
     // read the next step
@@ -190,8 +160,14 @@ const handlers = {
       // middle step
       else {
 
+        // change image
         if (currentImage < imageChangeIndexes.length && currentStep === imageChangeIndexes[currentImage]) {
           currentImage = ++this.attributes.foodBox.currentImage;
+        }
+
+        // first step after ingredients
+        if (currentStep === lastIngredientIndex + 1) {
+          speech.say('Continue with the following steps: ');
         }
 
         speech.say(currentRecipe.steps[currentStep]);
@@ -200,15 +176,12 @@ const handlers = {
 
       // very last step
       if (currentStep >= stepTotal - 1) {
-        speech.say(' This was the last step in this recipe. Enjoy your meal!');
+        setAttributes.call(this, {});
 
-        this.attributes.foodBox = {
-          'currentRecipe': {},
-          'currentStep': 0,
-          'currentImage': 0
-        };
+        speech.say(' This was the last step in this recipe. Enjoy your meal!');
       }
 
+      // display image if screen availible
       if (supportsDisplay.call(this)) {
         let bodyTemplate = new Alexa.templateBuilders.BodyTemplate7Builder();
         bodyTemplate.setImage(Alexa.utils.ImageUtils.makeImage(imageURLs[currentImage]));
@@ -216,6 +189,7 @@ const handlers = {
         this.response.speak(speech.ssml(true)).renderTemplate(template);
       }
 
+      // no screen
       else {
         this.response.speak(speech.ssml(true));
       }
@@ -231,12 +205,9 @@ const handlers = {
 
     // no open recipe
     if (_.isEmpty(this.attributes) || _.isEmpty(this.attributes.foodBox.currentRecipe)) {
-      speech.say(`You need to choose a recipe first.`);
-      this.response.speak(speech.ssml(true));
-      speech = new Speech();
-      this.emit(':responseReady');
+      speech.say(`You need to choose a recipe first. `);
+      elicitRecipe.call(this);
     }
-
 
     // first step includes all ingredients
     else if (currentStep === lastIngredientIndex + 1) {
@@ -253,16 +224,12 @@ const handlers = {
 
   'AMAZON.StopIntent': function() {
     speech.say('Goodbye!');
-    this.response.speak(speech.ssml(true));
-    speech = new Speech();
-    this.emit(':responseReady');
+    sayIt.call(this);
   },
 
   'AMAZON.CancelIntent': function() {
     speech.say('Goodbye!');
-    this.response.speak(speech.ssml(true));
-    speech = new Speech();
-    this.emit(':responseReady');
+    sayIt.call(this);
   },
 
   'AMAZON.HelpIntent': function () {
@@ -280,9 +247,7 @@ const handlers = {
       .say('"Alexa, ask Food Box to repeat".')
       .pause('500ms')
       .say('Happy cooking!');
-    this.response.speak(speech.ssml(true));
-    speech = new Speech();
-    this.emit(':responseReady');
+    sayIt.call(this);
   },
 
   'Unhandled': function () {
@@ -296,6 +261,28 @@ const handlers = {
 
 };
 
+// helper functions
+function sayIt() {
+  this.response.speak(speech.ssml(true));
+  speech = new Speech();
+  this.emit(':responseReady');
+}
+
+function setAttributes(newRecipe) {
+  this.attributes.foodBox = {
+    'currentRecipe': newRecipe,
+    'currentStep': 0,
+    'currentImage': 0
+  };
+};
+
+function elicitRecipe() {
+  speech.say(`What would you like to cook?`);
+  this.response.speak(speech.ssml(true)).listen();
+  speech = new Speech();
+  this.emit(':responseReady');
+}
+
 function supportsDisplay() {
   let hasDisplay =
     this.event.context &&
@@ -304,8 +291,27 @@ function supportsDisplay() {
     this.event.context.System.device.supportedInterfaces &&
     this.event.context.System.device.supportedInterfaces.Display
   return hasDisplay;
-}
+};
 
+function listMealkits() {
+  let list = '';
+  for (let mealkit in recipes) {
+    list += mealkit;
+    list += ', ';
+  }
+  return list.replace(/..$/, '.');
+};
+
+function listRecipes(mealkit) {
+  let list = '';
+  for (let recipe in recipes[mealkit]) {
+    list += recipe;
+    list += ', ';
+  }
+  return list.replace(/..$/, '.');
+};
+
+// alexa-sdk boilerplate
 exports.handler = function(event, context, callback) {
   const alexa = Alexa.handler(event, context);
   alexa.appId = process.env.APP_ID;
