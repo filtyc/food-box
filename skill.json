@@ -12,7 +12,9 @@
         "endpoint": {
           "sourceDir": "lambda/custom"
         },
-        "interfaces": []
+        "interfaces": [{
+					"type": "RENDER_TEMPLATE"
+				}]
       }
     },
     "manifestVersion": "1.0"

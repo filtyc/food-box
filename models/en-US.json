@@ -1,314 +1,358 @@
 {
-  "interactionModel": {
-      "languageModel": {
-          "invocationName": "food box",
-          "intents": [
-              {
-                  "name": "AMAZON.FallbackIntent",
-                  "samples": []
-              },
-              {
-                  "name": "AMAZON.CancelIntent",
-                  "samples": []
-              },
-              {
-                  "name": "AMAZON.HelpIntent",
-                  "samples": []
-              },
-              {
-                  "name": "AMAZON.StopIntent",
-                  "samples": []
-              },
-              {
-                  "name": "ChooseRecipe",
-                  "slots": [
-                      {
-                          "name": "mealkit",
-                          "type": "MEALKIT",
-                          "samples": [
-                              "{mealkit}"
-                          ]
-                      },
-                      {
-                          "name": "recipe",
-                          "type": "RECIPE",
-                          "samples": [
-                              "{recipe}"
-                          ]
-                      },
-                      {
-                          "name": "recipeChoicePhrase",
-                          "type": "RECIPE_CHOICE_PHRASE"
-                      }
-                  ],
-                  "samples": [
-                      "{recipeChoicePhrase} for {recipe} from {mealkit}",
-                      "{recipeChoicePhrase} {recipe} from {mealkit}",
-                      "{recipeChoicePhrase}"
-                  ]
-              },
-              {
-                  "name": "Next",
-                  "slots": [
-                      {
-                          "name": "nextPhrase",
-                          "type": "NEXT_PHRASE"
-                      }
-                  ],
-                  "samples": [
-                      "{nextPhrase} step",
-                      "go to {nextPhrase} step",
-                      "go to {nextPhrase}",
-                      "{nextPhrase}"
-                  ]
-              },
-              {
-                  "name": "Repeat",
-                  "slots": [
-                      {
-                          "name": "repeatPhrase",
-                          "type": "REPEAT_PHRASE"
-                      }
-                  ],
-                  "samples": [
-                      "go to {repeatPhrase} step",
-                      "{repeatPhrase} step",
-                      "go to {repeatPhrase}",
-                      "{repeatPhrase}"
-                  ]
-              }
-          ],
-          "types": [
-              {
-                  "name": "RECIPE",
-                  "values": [
-                      {
-                          "name": {
-                              "value": "Chrissy Teigen's Garlic & Soy-Glazed Shrimp",
-                              "synonyms": [
-                                  "shrimp"
-                              ]
-                          }
-                      },
-                      {
-                          "name": {
-                              "value": "Saffron & Yellow Tomato Risotto",
-                              "synonyms": [
-                                  "risotto"
-                              ]
-                          }
-                      },
-                      {
-                          "name": {
-                              "value": "Spicy Penne Pasta",
-                              "synonyms": [
-                                  "pasta"
-                              ]
-                          }
-                      },
-                      {
-                          "name": {
-                              "value": "Buffalo Artichoke Calzone",
-                              "synonyms": [
-                                  "calzone"
-                              ]
-                          }
-                      },
-                      {
-                          "name": {
-                              "value": "Mongolian Seitan Lettuce Cups",
-                              "synonyms": [
-                                  "seitan"
-                              ]
-                          }
-                      },
-                      {
-                          "name": {
-                              "value": "Chickpea Stuffed Avocado",
-                              "synonyms": [
-                                  "avocado"
-                              ]
-                          }
-                      }
-                  ]
-              },
-              {
-                  "name": "MEALKIT",
-                  "values": [
-                      {
-                          "name": {
-                              "value": "Purple Carrot"
-                          }
-                      },
-                      {
-                          "name": {
-                              "value": "Blue Apron"
-                          }
-                      }
-                  ]
-              },
-              {
-                  "name": "RECIPE_CHOICE_PHRASE",
-                  "values": [
-                      {
-                          "name": {
-                              "value": "switch recipes"
-                          }
-                      },
-                      {
-                          "name": {
-                              "value": "switch recipe to"
-                          }
-                      },
-                      {
-                          "name": {
-                              "value": "start the recipe"
-                          }
-                      },
-                      {
-                          "name": {
-                              "value": "cook the recipe"
-                          }
-                      },
-                      {
-                          "name": {
-                              "value": "read the recipe"
-                          }
-                      },
-                      {
-                          "name": {
-                              "value": "start a recipe"
-                          }
-                      },
-                      {
-                          "name": {
-                              "value": "cook a recipe"
-                          }
-                      },
-                      {
-                          "name": {
-                              "value": "read a recipe"
-                          }
-                      },
-                      {
-                          "name": {
-                              "value": "cook"
-                          }
-                      },
-                      {
-                          "name": {
-                              "value": "read"
-                          }
-                      },
-                      {
-                          "name": {
-                              "value": "start"
-                          }
-                      }
-                  ]
-              },
-              {
-                  "name": "NEXT_PHRASE",
-                  "values": [
-                      {
-                          "name": {
-                              "value": "the next"
-                          }
-                      },
-                      {
-                          "name": {
-                              "value": "next"
-                          }
-                      }
-                  ]
-              },
-              {
-                  "name": "REPEAT_PHRASE",
-                  "values": [
-                      {
-                          "name": {
-                              "value": "the previous"
-                          }
-                      },
-                      {
-                          "name": {
-                              "value": "previous"
-                          }
-                      },
-                      {
-                          "name": {
-                              "value": "the last"
-                          }
-                      },
-                      {
-                          "name": {
-                              "value": "last"
-                          }
-                      },
-                      {
-                          "name": {
-                              "value": "repeat"
-                          }
-                      }
-                  ]
-              }
-          ]
-      },
-      "dialog": {
-          "intents": [
-              {
-                  "name": "ChooseRecipe",
-                  "confirmationRequired": false,
-                  "prompts": {},
-                  "slots": [
-                      {
-                          "name": "mealkit",
-                          "type": "MEALKIT",
-                          "confirmationRequired": false,
-                          "elicitationRequired": true,
-                          "prompts": {
-                              "elicitation": "Elicit.Slot.966093114122.346421043254"
-                          }
-                      },
-                      {
-                          "name": "recipe",
-                          "type": "RECIPE",
-                          "confirmationRequired": false,
-                          "elicitationRequired": true,
-                          "prompts": {
-                              "elicitation": "Elicit.Slot.1028849265600.201279541524"
-                          }
-                      },
-                      {
-                          "name": "recipeChoicePhrase",
-                          "type": "RECIPE_CHOICE_PHRASE",
-                          "confirmationRequired": false,
-                          "elicitationRequired": false,
-                          "prompts": {}
-                      }
-                  ]
-              }
-          ]
-      },
-      "prompts": [
-          {
-              "id": "Elicit.Slot.1028849265600.201279541524",
-              "variations": [
-                  {
-                      "type": "PlainText",
-                      "value": "What would you like to cook?"
-                  }
-              ]
-          },
-          {
-              "id": "Elicit.Slot.966093114122.346421043254",
-              "variations": [
-                  {
-                      "type": "PlainText",
-                      "value": "Which meal kit are you cooking from?"
-                  }
-              ]
-          }
-      ]
-  }
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "food box",
+            "intents": [
+                {
+                    "name": "AMAZON.FallbackIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "ChooseRecipe",
+                    "slots": [
+                        {
+                            "name": "mealkit",
+                            "type": "MEALKIT",
+                            "samples": [
+                                "{mealkit}"
+                            ]
+                        },
+                        {
+                            "name": "recipe",
+                            "type": "RECIPE",
+                            "samples": [
+                                "{recipe}"
+                            ]
+                        },
+                        {
+                            "name": "recipeChoicePhrase",
+                            "type": "RECIPE_CHOICE_PHRASE"
+                        }
+                    ],
+                    "samples": [
+                        "{recipeChoicePhrase} for {recipe} from {mealkit}",
+                        "{recipeChoicePhrase} {recipe} from {mealkit}",
+                        "{recipeChoicePhrase}"
+                    ]
+                },
+                {
+                    "name": "Next",
+                    "slots": [
+                        {
+                            "name": "nextPhrase",
+                            "type": "NEXT_PHRASE"
+                        }
+                    ],
+                    "samples": [
+                        "{nextPhrase} step",
+                        "go to {nextPhrase} step",
+                        "go to {nextPhrase}",
+                        "{nextPhrase}"
+                    ]
+                },
+                {
+                    "name": "Repeat",
+                    "slots": [
+                        {
+                            "name": "repeatPhrase",
+                            "type": "REPEAT_PHRASE"
+                        }
+                    ],
+                    "samples": [
+                        "go to {repeatPhrase} step",
+                        "{repeatPhrase} step",
+                        "go to {repeatPhrase}",
+                        "{repeatPhrase}"
+                    ]
+                },
+                {
+                    "name": "AMAZON.MoreIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.NavigateSettingsIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.NextIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.PageUpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.PageDownIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.PreviousIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.ScrollRightIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.ScrollDownIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.ScrollLeftIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.ScrollUpIntent",
+                    "samples": []
+                }
+            ],
+            "types": [
+                {
+                    "name": "RECIPE",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "Chrissy Teigen's Garlic & Soy-Glazed Shrimp",
+                                "synonyms": [
+                                    "shrimp"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Saffron & Yellow Tomato Risotto",
+                                "synonyms": [
+                                    "risotto"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Spicy Penne Pasta",
+                                "synonyms": [
+                                    "pasta"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Buffalo Artichoke Calzone",
+                                "synonyms": [
+                                    "calzone"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Mongolian Seitan Lettuce Cups",
+                                "synonyms": [
+                                    "seitan"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Chickpea Stuffed Avocado",
+                                "synonyms": [
+                                    "avocado"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "MEALKIT",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "Purple Carrot"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Blue Apron"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "RECIPE_CHOICE_PHRASE",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "switch recipes"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "switch recipe to"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "start the recipe"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "cook the recipe"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "read the recipe"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "start a recipe"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "cook a recipe"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "read a recipe"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "cook"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "read"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "start"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "NEXT_PHRASE",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "the next"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "next"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "REPEAT_PHRASE",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "the previous"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "previous"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "the last"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "last"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "repeat"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "dialog": {
+            "intents": [
+                {
+                    "name": "ChooseRecipe",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "mealkit",
+                            "type": "MEALKIT",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.966093114122.346421043254"
+                            }
+                        },
+                        {
+                            "name": "recipe",
+                            "type": "RECIPE",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.1028849265600.201279541524"
+                            }
+                        },
+                        {
+                            "name": "recipeChoicePhrase",
+                            "type": "RECIPE_CHOICE_PHRASE",
+                            "confirmationRequired": false,
+                            "elicitationRequired": false,
+                            "prompts": {}
+                        }
+                    ]
+                }
+            ]
+        },
+        "prompts": [
+            {
+                "id": "Elicit.Slot.1028849265600.201279541524",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "What would you like to cook?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.966093114122.346421043254",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Which meal kit are you cooking from?"
+                    }
+                ]
+            }
+        ]
+    }
 }

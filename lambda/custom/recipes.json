@@ -63,7 +63,16 @@
         "Serve the spicy pepper sauce and remaining lime wedges on the side.",
         "Enjoy."
       ],
-      "lastIngredientIndex": 12
+      "lastIngredientIndex": 12,
+      "imageURLs": [
+        "https://media.blueapron.com/recipes/3116/recipe_steps/29673/1525963948-1-0013-0832/0604_2PF_Garlic-Soy-Shrimp_0006_WEB_high_feature.jpg",
+        "https://media.blueapron.com/recipes/3116/recipe_steps/29677/1525963955-1-0008-5084/0604_2PF_Garlic-Soy-Shrimp_0034_WEB_high_feature.jpg",
+        "https://media.blueapron.com/recipes/3116/recipe_steps/29674/1525963961-1-0014-6323/0604_2PF_Garlic-Soy-Shrimp_0014_WEB_high_feature.jpg",
+        "https://media.blueapron.com/recipes/3116/recipe_steps/29678/1525963968-1-0015-0895/0604_2PF_Garlic-Soy-Shrimp_0055_WEB_high_feature.jpg",
+        "https://media.blueapron.com/recipes/3116/recipe_steps/29675/1525963974-1-0009-0310/0604_2PF_Garlic-Soy-Shrimp_0030_WEB_high_feature.jpg",
+        "https://media.blueapron.com/recipes/3116/recipe_steps/29676/1525963979-1-0014-4036/0604_2PF_Garlic-Soy-Shrimp_0043_WEB_high_feature.jpg"
+      ],
+      "imageChangeIndexes": [21, 29, 34, 39, 48]
     },
     "Spicy Penne Pasta": {
       "name": "Spicy Penne Pasta",
