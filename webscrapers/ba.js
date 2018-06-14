@@ -1,56 +1,80 @@
-const request = require('request');
+const fs = require('fs');
+
+const rp = require('request-promise-native');
 const cheerio = require('cheerio');
 
-const url = 'https://www.blueapron.com/recipes/soba-noodles-with-snow-peas-marinated-enoki-mushrooms';
+let recipeUrls = [];
+let recipes = {};
+let rpOptions = {
+  uri: 'https://www.blueapron.com/pages/sample-recipes',
+  transform: (body) => cheerio.load(body),
+};
 
-let recipe = {};
-let name = "";
-let steps = [];
-let lastIngredientIndex = 0;
-let imageChangeIndexes = [];
-let imageURLs = [];
+rp(rpOptions).then(($) => {
 
-request(url, (err, res, html) => {
-  if (!err) {
-    const $ = cheerio.load(html);
+  $('a.recipe-card').attr('href', (i, e) => {
+    if (i < 8) {
+      recipeUrls.push('https://www.blueapron.com' + e);
+    }
+  });
 
-    name = $('h1[class="ba-recipe-title__main"]').text().split('\n')[1].trim()
+  recipeUrls.forEach((recipeUrl) => {
 
-    // ingredients
-    $('li[itemprop="ingredients"]').text((i, e) => {
-      steps.push(e.replace(/(\n)/gm, ' ').replace(/(\s\s+)/gm, ' ').trim() + '.');
-    })
+    rpOptions.uri = recipeUrl;
 
-    lastIngredientIndex = steps.length - 1;
+    let name = "";
+    let steps = [];
+    let lastIngredientIndex = 0;
+    let imageChangeIndexes = [];
+    let imageURLs = [];
 
-    // steps
-    $('div[class="step-txt"] > p').text((i, e) => {
-      for (let step of e.split('.')) {
-        step = step.trim();
-        if (step) {
-          steps.push(step + '.');
+    rp(rpOptions).then(($) => {
+
+      name = $('h1.ba-recipe-title__main').text().split('\n')[1].trim();
+
+      // ingredients
+      $('li[itemprop="ingredients"]').text((i, e) => {
+        steps.push(e.replace(/(\n)/gm, ' ').replace(/(\s\s+)/gm, ' ').trim() + '.');
+      })
+
+      lastIngredientIndex = steps.length - 1;
+
+      // steps
+      $('div.step-txt > p').text((i, e) => {
+        for (let step of e.split('.')) {
+          step = step.trim();
+          if (step) {
+            steps.push(step + '.');
+          }
         }
-      }
-      imageChangeIndexes.push(steps.length);
-    })
+        imageChangeIndexes.push(steps.length);
+      })
 
-    imageChangeIndexes.pop();
+      imageChangeIndexes.pop();
 
-    // images
-    $('div[class="col-md-6 col-xs-12"] > img').attr('src', (i, e) => {
-      imageURLs.push(e);
+      // images
+      $('div.col-md-6.col-xs-12 > img').attr('src', (i, e) => {
+        imageURLs.push(e);
+      });
+
+
+      recipes[name] = {
+        name,
+        mealkit: 'Blue Apron',
+        steps,
+        lastIngredientIndex,
+        imageURLs,
+        imageChangeIndexes
+      };
+
+      fs.writeFileSync('output/ba-recipes.json', JSON.stringify(recipes, null, 2));
+
+    }).catch((err) => {
+      console.log(err);
     });
-  }
 
-  recipe[name] = {
-    name,
-    mealkit: 'Blue Apron',
-    steps,
-    lastIngredientIndex,
-    imageURLs,
-    imageChangeIndexes
-  };
+  });
 
-  console.log(JSON.stringify(recipe, null, 2));
+}).catch((err) => {
+  console.log(err);
 });
-
