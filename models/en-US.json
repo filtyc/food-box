@@ -128,6 +128,14 @@
                     "values": [
                         {
                             "name": {
+                                "value": "Soba Noodles",
+                                "synonyms": [
+                                    "noodles"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
                                 "value": "Chrissy Teigen's Garlic & Soy-Glazed Shrimp",
                                 "synonyms": [
                                     "shrimp"
