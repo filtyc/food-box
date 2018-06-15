@@ -128,34 +128,42 @@
                     "values": [
                         {
                             "name": {
-                                "value": "Soba Noodles",
-                                "synonyms": [
-                                    "noodles"
-                                ]
+                                "value": "Korean-Style Beef"
                             }
                         },
                         {
                             "name": {
-                                "value": "Chrissy Teigen's Garlic & Soy-Glazed Shrimp",
-                                "synonyms": [
-                                    "shrimp"
-                                ]
+                                "value": "Spiced Chicken Breasts & Mashed Potatoes"
                             }
                         },
                         {
                             "name": {
-                                "value": "Saffron & Yellow Tomato Risotto",
-                                "synonyms": [
-                                    "risotto"
-                                ]
+                                "value": "Cajun Shrimp Tacos"
                             }
                         },
                         {
                             "name": {
-                                "value": "Spicy Penne Pasta",
-                                "synonyms": [
-                                    "pasta"
-                                ]
+                                "value": "Pasta Primavera"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Spinach, Tomato, & Goat Cheese Quiche"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Greek-Style Farro Salad"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Chrissy Teigen's Chinese Chicken Salad"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Seared Pork Chops & Carrot Agrodolce"
                             }
                         },
                         {
