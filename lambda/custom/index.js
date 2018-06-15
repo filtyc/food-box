@@ -93,8 +93,6 @@ const handlers = {
 
       // intent's confirmation was denied
       else if (this.event.request.intent.confirmationStatus === 'DENIED') {
-        setAttributes(this, {});
-
         speech.say(`Ok, canceling.`);
         sayIt.call(this);
       }
@@ -234,12 +232,12 @@ const handlers = {
   },
 
   'AMAZON.StopIntent': function() {
-    speech.say('Goodbye!');
+    speech.say('Ok, bye!');
     sayIt.call(this);
   },
 
   'AMAZON.CancelIntent': function() {
-    speech.say('Goodbye!');
+    speech.say('Ok, bye!');
     sayIt.call(this);
   },
 

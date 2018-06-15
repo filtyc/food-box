@@ -61,6 +61,7 @@ const fetchRecipe = async () => {
       imageURLs.push(e);
     });
 
+    // TODO: wrap everything in "Blue Apron":
     recipes[name] = {
       name,
       mealkit: 'Blue Apron',
@@ -75,6 +76,7 @@ const fetchRecipe = async () => {
   }
 };
 
+// TODO: jsonize this
 const getModelValues = () => {
   for (const recipeName of recipeNames) {
     modelValues +=
