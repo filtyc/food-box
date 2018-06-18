@@ -5,9 +5,9 @@ const cheerio = require('cheerio');
 
 let recipeUrls = [];
 let recipeNames = [];
-let recipes = {};
+let recipes = {'Blue Apron': {}};
 let options = {transform: body => cheerio.load(body)};
-let modelValues = '';
+let modelValues = [];
 
 
 const getRecipeUrls = async () => {
@@ -44,7 +44,7 @@ const fetchRecipe = async () => {
     lastIngredientIndex = steps.length - 1;
 
     // steps
-    $('div.step-txt > p').text((i, e) => {
+    $('div.step-txt').text((i, e) => {
       for (let step of e.split('.')) {
         step = step.trim();
         if (step) {
@@ -61,8 +61,7 @@ const fetchRecipe = async () => {
       imageURLs.push(e);
     });
 
-    // TODO: wrap everything in "Blue Apron":
-    recipes[name] = {
+    recipes['Blue Apron'][name] = {
       name,
       mealkit: 'Blue Apron',
       steps,
@@ -79,13 +78,7 @@ const fetchRecipe = async () => {
 // TODO: jsonize this
 const getModelValues = () => {
   for (const recipeName of recipeNames) {
-    modelValues +=
-`{
-    "name": {
-        "value": "${recipeName}"
-    }
-},
-`;
+    modelValues.push({'name': {'value': recipeName}});
   }
 };
 
@@ -101,7 +94,7 @@ scrape = async () => {
   getModelValues();
 
   fs.writeFileSync('output/ba-recipes.json', JSON.stringify(recipes, null, 2));
-  fs.writeFileSync('output/ba-modelValues.txt', modelValues);
+  fs.writeFileSync('output/ba-modelValues.json', JSON.stringify(modelValues, null, 4));
 };
 
 scrape();

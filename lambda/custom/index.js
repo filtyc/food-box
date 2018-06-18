@@ -82,7 +82,7 @@ const handlers = {
           const resolvedMealkit = this.event.request.intent.slots.mealkit.resolutions.resolutionsPerAuthority[0].values[0].value.name;
           const resolvedRecipe = this.event.request.intent.slots.recipe.resolutions.resolutionsPerAuthority[0].values[0].value.name;
 
-          speech.say(`So, you are cooking ${resolvedRecipe} from ${resolvedMealkit}. Correct?`);
+          speech.say(`So you are cooking ${resolvedRecipe} from ${resolvedMealkit}, right?`);
           this.emit(':confirmIntent', speech.ssml(true))
           speech = new Speech();
         } else {
