@@ -171,26 +171,17 @@
 
                         {
                             "name": {
-                                "value": "Buffalo Artichoke Calzone",
-                                "synonyms": [
-                                    "calzone"
-                                ]
+                                "value": "Thai Chickpea \"Meatballs\""
                             }
                         },
                         {
                             "name": {
-                                "value": "Mongolian Seitan Lettuce Cups",
-                                "synonyms": [
-                                    "seitan"
-                                ]
+                                "value": "Tofu Halloumi"
                             }
                         },
                         {
                             "name": {
-                                "value": "Chickpea Stuffed Avocado",
-                                "synonyms": [
-                                    "avocado"
-                                ]
+                                "value": "Collard Green Enchiladas"
                             }
                         }
                     ]

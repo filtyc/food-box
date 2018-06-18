@@ -3,9 +3,10 @@ const fs = require('fs');
 const rp = require('request-promise-native');
 const cheerio = require('cheerio');
 
+const PC = 'Purple Carrot';
 let recipeUrls = [];
 let recipeNames = [];
-let recipes = {'Blue Apron': {}};
+let recipes = {[PC]: {}};
 let options = {transform: body => cheerio.load(body)};
 let modelValues = [];
 
@@ -14,8 +15,8 @@ const getRecipeUrls = async () => {
   try {
     const $ = await rp(options);
 
-    $('a.recipe-card').attr('href', (i, e) => {
-      if (i < 8) recipeUrls.push('https://www.blueapron.com' + e);
+    $('a.c-recipe--featured').attr('href', (i, e) => {
+      recipeUrls.push('https://www.purplecarrot.com/' + e);
     });
   }
   catch(err) {
@@ -33,37 +34,40 @@ const fetchRecipe = async () => {
   try {
     const $ = await rp(options);
 
-    name = $('h1.ba-recipe-title__main').text().split('\n')[1].trim();
+    name = $('h1.c-recipe-details-header__title').text().trim();
     recipeNames.push(name);
 
     // ingredients
-    $('li[itemprop="ingredients"]').text((i, e) => {
-      steps.push(e.replace(/(\n)/gm, ' ').replace(/(\s\s+)/gm, ' ').trim() + '.');
+    $('ol.u-text li').text((i, e) => {
+      let step = e.trim().replace(/(\s\s+)/gm, ' ');
+      if (!step.startsWith('*') && !step.endsWith('*')) steps.push(step + '.');
     });
 
     lastIngredientIndex = steps.length - 1;
 
     // steps
-    $('div.step-txt').text((i, e) => {
-      for (let step of e.split('.')) {
-        step = step.trim();
-        if (step) {
-          steps.push(step + '.');
+    $('div.u-text').text((i, e) => {
+      if (i > 0) {
+        for (let step of e.split('.')) {
+          step = step.trim();
+          if (step) {
+            steps.push(step + '.');
+          }
         }
+        imageChangeIndexes.push(steps.length);
       }
-      imageChangeIndexes.push(steps.length);
     });
 
     imageChangeIndexes.pop();
 
     // images
-    $('div.col-md-6.col-xs-12 > img').attr('src', (i, e) => {
-      imageURLs.push(e);
+    $('div.c-recipe-details-section picture img').attr('src', (i, e) => {
+      if (e.includes('Step')) imageURLs.push(e);
     });
 
-    recipes['Blue Apron'][name] = {
+    recipes[PC][name] = {
       name,
-      mealkit: 'Blue Apron',
+      mealkit: PC,
       steps,
       lastIngredientIndex,
       imageURLs,
@@ -82,7 +86,7 @@ const getModelValues = () => {
 };
 
 scrape = async () => {
-  options.uri = 'https://www.blueapron.com/pages/sample-recipes';
+  options.uri = 'https://www.purplecarrot.com/plant-based-recipes';
   await getRecipeUrls();
 
   for (const recipeUrl of recipeUrls) {
@@ -92,8 +96,8 @@ scrape = async () => {
 
   getModelValues();
 
-  fs.writeFileSync('output/ba-recipes.json', JSON.stringify(recipes, null, 2));
-  fs.writeFileSync('output/ba-modelValues.json', JSON.stringify(modelValues, null, 4));
+  fs.writeFileSync('output/pc-recipes.json', JSON.stringify(recipes, null, 2));
+  fs.writeFileSync('output/pc-modelValues.json', JSON.stringify(modelValues, null, 4));
 };
 
 scrape();
